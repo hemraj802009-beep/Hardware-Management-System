@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% set active_page = "customers" %}
+
+{% block title %}Customers{% endblock %}
+{% block page_title %}Customers{% endblock %}
+{% block breadcrumb %}Business / Customers{% endblock %}
+
+{% block topbar_actions %}
+<a href="/customers/add" class="btn btn-primary btn-sm" id="add-customer-btn">
+    <i class="fas fa-plus"></i> Add Customer
+</a>
+{% endblock %}
+
+{% block content %}
+<form method="GET" action="/customers">
+    <div class="search-bar">
+        <div class="search-input-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" name="q" placeholder="Search customers by name, phone, or city..." value="{{ search }}" id="customer-search">
+        </div>
+        <button type="submit" class="btn btn-secondary btn-sm">
+            <i class="fas fa-search"></i> Search
+        </button>
+    </div>
+</form>
+
+<div class="card">
+    <div class="card-body no-padding">
+        {% if customers %}
+        <table class="data-table" id="customers-table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>City</th>
+                    <th>Orders</th>
+                    <th>Total Spent</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer, total_orders, total_spent in customers %}
+                <tr>
+                    <td>
+                        <div class="fw-semibold">{{ customer.name }}</div>
+                        <div class="text-muted" style="font-size:11px;">Since {{ customer.created_at.strftime('%b %Y') }}</div>
+                    </td>
+                    <td>
+                        {% if customer.phone %}
+                        <div style="font-size:12px;"><i class="fas fa-phone text-muted" style="width:14px;"></i> {{ customer.phone }}</div>
+                        {% endif %}
+                        {% if customer.email %}
+                        <div style="font-size:12px;"><i class="fas fa-envelope text-muted" style="width:14px;"></i> {{ customer.email }}</div>
+                        {% endif %}
+                    </td>
+                    <td>{{ customer.city or '—' }}</td>
+                    <td><span class="badge badge-info">{{ total_orders }}</span></td>
+                    <td class="fw-bold text-success">₹{{ "{:,.2f}".format(total_spent) }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="/customers/edit/{{ customer.id }}" class="btn btn-sm btn-secondary btn-icon" title="Edit">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="/customers/delete/{{ customer.id }}" class="btn btn-sm btn-danger btn-icon" title="Delete"
+                               onclick="return confirm('Remove this customer?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-users"></i>
+            <h4>No customers found</h4>
+            <p>Add customers to track their orders and history</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

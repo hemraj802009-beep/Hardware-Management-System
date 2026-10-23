@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% set active_page = "products" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}Inventory / Products / {{ title }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px;">
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-{% if product %}pen{% else %}plus{% endif %}"></i> {{ title }}</h3>
+        </div>
+        <div class="card-body">
+            {% if error is defined and error %}
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="/products/{% if product %}edit/{{ product.id }}{% else %}add{% endif %}" id="product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Product Name *</label>
+                        <input type="text" name="name" class="form-control" required
+                               value="{{ product.name if product else '' }}" placeholder="e.g., Bosch Impact Drill 550W" id="product-name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">SKU *</label>
+                        <input type="text" name="sku" class="form-control" required
+                               value="{{ product.sku if product else '' }}" placeholder="e.g., PWR-001" id="product-sku">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-control" placeholder="Product description..." id="product-desc">{{ product.description if product else '' }}</textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select name="category_id" class="form-control" id="product-category">
+                            <option value="0">Select Category</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.id }}" {% if product and product.category_id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Supplier</label>
+                        <select name="supplier_id" class="form-control" id="product-supplier">
+                            <option value="0">Select Supplier</option>
+                            {% for sup in suppliers %}
+                            <option value="{{ sup.id }}" {% if product and product.supplier_id == sup.id %}selected{% endif %}>{{ sup.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label class="form-label">Cost Price (₹)</label>
+                        <input type="number" name="cost_price" class="form-control" step="0.01" min="0"
+                               value="{{ product.cost_price if product else '0' }}" id="product-cost">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Selling Price (₹)</label>
+                        <input type="number" name="selling_price" class="form-control" step="0.01" min="0"
+                               value="{{ product.selling_price if product else '0' }}" id="product-price">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Unit</label>
+                        <select name="unit" class="form-control" id="product-unit">
+                            {% for u in ['piece', 'kg', 'meter', 'liter', 'box', 'set', 'pair'] %}
+                            <option value="{{ u }}" {% if product and product.unit == u %}selected{% endif %}>{{ u | capitalize }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label class="form-label">Current Stock</label>
+                        <input type="number" name="quantity" class="form-control" min="0"
+                               value="{{ product.quantity if product else '0' }}" id="product-qty">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Minimum Stock</label>
+                        <input type="number" name="min_stock" class="form-control" min="0"
+                               value="{{ product.min_stock if product else '5' }}" id="product-min-stock">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Location (Aisle/Shelf)</label>
+                        <input type="text" name="location" class="form-control"
+                               value="{{ product.location if product else '' }}" placeholder="e.g., A1-01" id="product-location">
+                    </div>
+                </div>
+
+                <div class="d-flex gap-1 mt-2">
+                    <button type="submit" class="btn btn-primary" id="product-submit">
+                        <i class="fas fa-save"></i> {{ 'Update' if product else 'Create' }} Product
+                    </button>
+                    <a href="/products" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+{% set active_page = "dashboard" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block breadcrumb %}Home / Dashboard{% endblock %}
+
+{% block content %}
+<!-- Stats Row -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">₹{{ "{:,.0f}".format(today_sales) }}</div>
+                <div class="stat-label">Today's Revenue</div>
+            </div>
+            <div class="stat-icon green">
+                <i class="fas fa-rupee-sign"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">{{ today_orders }}</div>
+                <div class="stat-label">Today's Orders</div>
+            </div>
+            <div class="stat-icon blue">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">₹{{ "{:,.0f}".format(monthly_sales) }}</div>
+                <div class="stat-label">Monthly Revenue</div>
+            </div>
+            <div class="stat-icon purple">
+                <i class="fas fa-chart-line"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">{{ total_products }}</div>
+                <div class="stat-label">Total Products</div>
+            </div>
+            <div class="stat-icon cyan">
+                <i class="fas fa-box-open"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">{{ total_customers }}</div>
+                <div class="stat-label">Customers</div>
+            </div>
+            <div class="stat-icon orange">
+                <i class="fas fa-users"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">₹{{ "{:,.0f}".format(inventory_value) }}</div>
+                <div class="stat-label">Inventory Value</div>
+            </div>
+            <div class="stat-icon blue">
+                <i class="fas fa-warehouse"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="grid-2 mb-3">
+    <!-- Sales Chart -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-chart-area"></i> Sales Trend (7 Days)</h3>
+        </div>
+        <div class="card-body">
+            <div class="chart-container">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Revenue -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-chart-pie"></i> Revenue by Category</h3>
+        </div>
+        <div class="card-body">
+            <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid-2 mb-3">
+    <!-- Low Stock Alerts -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-exclamation-triangle text-warning"></i> Low Stock Alerts ({{ low_stock_count }})</h3>
+            <a href="/products?stock=low" class="btn btn-sm btn-secondary">View All</a>
+        </div>
+        <div class="card-body no-padding">
+            {% if low_stock %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Stock</th>
+                        <th>Min Stock</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in low_stock[:8] %}
+                    <tr>
+                        <td>
+                            <div class="fw-semibold">{{ product.name }}</div>
+                            <div class="text-muted" style="font-size:11px;">{{ product.sku }}</div>
+                        </td>
+                        <td class="fw-bold {% if product.quantity == 0 %}text-danger{% else %}text-warning{% endif %}">
+                            {{ product.quantity }}
+                        </td>
+                        <td class="text-muted">{{ product.min_stock }}</td>
+                        <td>
+                            {% if product.quantity == 0 %}
+                            <span class="badge badge-danger">Out of Stock</span>
+                            {% else %}
+                            <span class="badge badge-warning">Low Stock</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-check-circle text-success"></i>
+                <h4>All stock levels healthy</h4>
+                <p>No products are running low</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Sales -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-receipt"></i> Recent Sales</h3>
+            <a href="/sales" class="btn btn-sm btn-secondary">View All</a>
+        </div>
+        <div class="card-body no-padding">
+            {% if recent_sales %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Invoice</th>
+                        <th>Customer</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in recent_sales %}
+                    <tr>
+                        <td>
+                            <a href="/sales/view/{{ sale.id }}" class="fw-semibold">{{ sale.invoice_number }}</a>
+                            <div class="text-muted" style="font-size:11px;">{{ sale.created_at.strftime('%b %d, %H:%M') }}</div>
+                        </td>
+                        <td>{{ sale.customer.name if sale.customer else 'Walk-in' }}</td>
+                        <td class="fw-bold text-success">₹{{ "{:,.2f}".format(sale.total_amount) }}</td>
+                        <td><span class="badge badge-info">{{ sale.payment_method }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-shopping-cart"></i>
+                <h4>No sales yet</h4>
+                <p>Sales will appear here once recorded</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Top Products -->
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-fire"></i> Top Selling Products (30 Days)</h3>
+    </div>
+    <div class="card-body no-padding">
+        {% if top_products %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Qty Sold</th>
+                    <th>Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, qty, revenue in top_products %}
+                <tr>
+                    <td><span class="badge badge-purple">{{ loop.index }}</span></td>
+                    <td class="fw-semibold">{{ name }}</td>
+                    <td>{{ qty }}</td>
+                    <td class="fw-bold text-success">₹{{ "{:,.2f}".format(revenue) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-chart-bar"></i>
+            <h4>No sales data</h4>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Sales Chart
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    const salesData = {{ daily_sales | tojson }};
+    new Chart(salesCtx, {
+        type: 'line',
+        data: {
+            labels: salesData.map(d => d.date),
+            datasets: [{
+                label: 'Revenue (₹)',
+                data: salesData.map(d => d.total),
+                borderColor: '#6366f1',
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#6366f1',
+                pointBorderColor: '#6366f1',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1e2130',
+                    titleColor: '#f1f3f9',
+                    bodyColor: '#8b8fa7',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(ctx) {
+                            return '₹' + ctx.parsed.y.toLocaleString();
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: 'rgba(255,255,255,0.04)' },
+                    ticks: { color: '#5c6078', font: { size: 11 } }
+                },
+                y: {
+                    grid: { color: 'rgba(255,255,255,0.04)' },
+                    ticks: {
+                        color: '#5c6078',
+                        font: { size: 11 },
+                        callback: function(v) { return '₹' + (v/1000).toFixed(0) + 'k'; }
+                    }
+                }
+            }
+        }
+    });
+
+    // Category Chart
+    const catCtx = document.getElementById('categoryChart').getContext('2d');
+    const catData = {{ category_revenue | tojson }};
+    const catColors = ['#6366f1','#8b5cf6','#a855f7','#ec4899','#f97316','#22c55e','#06b6d4','#3b82f6','#f59e0b','#ef4444'];
+    new Chart(catCtx, {
+        type: 'doughnut',
+        data: {
+            labels: catData.map(d => d[0]),
+            datasets: [{
+                data: catData.map(d => d[1]),
+                backgroundColor: catColors.slice(0, catData.length),
+                borderWidth: 0,
+                hoverOffset: 8,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%',
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: '#8b8fa7',
+                        font: { size: 11 },
+                        padding: 12,
+                        usePointStyle: true,
+                        pointStyleWidth: 10,
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1e2130',
+                    titleColor: '#f1f3f9',
+                    bodyColor: '#8b8fa7',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(ctx) {
+                            return ' ₹' + ctx.parsed.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% set active_page = "purchases" %}
+
+{% block title %}Purchase Orders{% endblock %}
+{% block page_title %}Purchase Orders{% endblock %}
+{% block breadcrumb %}Business / Purchase Orders{% endblock %}
+
+{% block topbar_actions %}
+<a href="/purchases/add" class="btn btn-primary btn-sm" id="add-purchase-btn">
+    <i class="fas fa-plus"></i> Create PO
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="search-bar">
+    <a href="/purchases?status=all" class="btn btn-sm {% if status_filter == 'all' %}btn-primary{% else %}btn-secondary{% endif %}">All</a>
+    <a href="/purchases?status=ordered" class="btn btn-sm {% if status_filter == 'ordered' %}btn-primary{% else %}btn-secondary{% endif %}">Ordered</a>
+    <a href="/purchases?status=received" class="btn btn-sm {% if status_filter == 'received' %}btn-primary{% else %}btn-secondary{% endif %}">Received</a>
+    <a href="/purchases?status=cancelled" class="btn btn-sm {% if status_filter == 'cancelled' %}btn-primary{% else %}btn-secondary{% endif %}">Cancelled</a>
+</div>
+
+<div class="card">
+    <div class="card-body no-padding">
+        {% if purchases %}
+        <table class="data-table" id="purchases-table">
+            <thead>
+                <tr>
+                    <th>PO Number</th>
+                    <th>Supplier</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Expected</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for po in purchases %}
+                <tr>
+                    <td>
+                        <a href="/purchases/view/{{ po.id }}" class="fw-semibold">{{ po.po_number }}</a>
+                    </td>
+                    <td>{{ po.supplier.name if po.supplier else '—' }}</td>
+                    <td>{{ po.created_at.strftime('%b %d, %Y') }}</td>
+                    <td><span class="badge badge-info">{{ po.items | length }}</span></td>
+                    <td class="fw-bold">₹{{ "{:,.2f}".format(po.total_amount) }}</td>
+                    <td>{{ po.expected_date.strftime('%b %d') if po.expected_date else '—' }}</td>
+                    <td>
+                        {% if po.status == 'received' %}
+                        <span class="badge badge-success">Received</span>
+                        {% elif po.status == 'ordered' %}
+                        <span class="badge badge-warning">Ordered</span>
+                        {% else %}
+                        <span class="badge badge-danger">Cancelled</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="/purchases/view/{{ po.id }}" class="btn btn-sm btn-secondary btn-icon" title="View">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            {% if po.status == 'ordered' %}
+                            <a href="/purchases/receive/{{ po.id }}" class="btn btn-sm btn-success btn-icon" title="Mark Received"
+                               onclick="return confirm('Mark as received? Stock will be updated.')">
+                                <i class="fas fa-check"></i>
+                            </a>
+                            <a href="/purchases/cancel/{{ po.id }}" class="btn btn-sm btn-danger btn-icon" title="Cancel"
+                               onclick="return confirm('Cancel this purchase order?')">
+                                <i class="fas fa-ban"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-truck"></i>
+            <h4>No purchase orders found</h4>
+            <p>Create a new purchase order to restock inventory</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

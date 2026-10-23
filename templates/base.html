@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hardware Store Management System - Complete inventory, sales, and business management solution">
+    <title>{% block title %}HWM{% endblock %} | Hardware Store Manager</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>HardwareHub</h1>
+                    <span>Management System</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a href="/" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}" id="nav-dashboard">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/sales/pos" class="nav-link {% if active_page == 'pos' %}active{% endif %}" id="nav-pos">
+                        <i class="fas fa-cash-register"></i>
+                        <span>Point of Sale</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Inventory</div>
+                    <a href="/products" class="nav-link {% if active_page == 'products' %}active{% endif %}" id="nav-products">
+                        <i class="fas fa-box-open"></i>
+                        <span>Products</span>
+                    </a>
+                    <a href="/categories" class="nav-link {% if active_page == 'categories' %}active{% endif %}" id="nav-categories">
+                        <i class="fas fa-tags"></i>
+                        <span>Categories</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Business</div>
+                    <a href="/sales" class="nav-link {% if active_page == 'sales' %}active{% endif %}" id="nav-sales">
+                        <i class="fas fa-receipt"></i>
+                        <span>Sales</span>
+                    </a>
+                    <a href="/purchases" class="nav-link {% if active_page == 'purchases' %}active{% endif %}" id="nav-purchases">
+                        <i class="fas fa-truck"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="/customers" class="nav-link {% if active_page == 'customers' %}active{% endif %}" id="nav-customers">
+                        <i class="fas fa-users"></i>
+                        <span>Customers</span>
+                    </a>
+                    <a href="/suppliers" class="nav-link {% if active_page == 'suppliers' %}active{% endif %}" id="nav-suppliers">
+                        <i class="fas fa-building"></i>
+                        <span>Suppliers</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Analytics</div>
+                    <a href="/reports" class="nav-link {% if active_page == 'reports' %}active{% endif %}" id="nav-reports">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="user-avatar">{{ user.name[0] if user else 'A' }}</div>
+                    <div class="user-info">
+                        <div class="name">{{ user.name if user else 'Admin' }}</div>
+                        <div class="role">{{ user.role if user else 'admin' }}</div>
+                    </div>
+                    <a href="/logout" class="topbar-btn" title="Logout" style="border:none;">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="topbar-btn d-none-desktop" id="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div>
+                        <h2>{% block page_title %}Dashboard{% endblock %}</h2>
+                        <div class="breadcrumb">{% block breadcrumb %}Home{% endblock %}</div>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    {% block topbar_actions %}{% endblock %}
+                    <a href="/logout" class="topbar-btn" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="page-content animate-fade">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

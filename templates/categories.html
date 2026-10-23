@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% set active_page = "categories" %}
+
+{% block title %}Categories{% endblock %}
+{% block page_title %}Categories{% endblock %}
+{% block breadcrumb %}Inventory / Categories{% endblock %}
+
+{% block topbar_actions %}
+<button class="btn btn-primary btn-sm" onclick="document.getElementById('addCategoryModal').classList.add('active')" id="add-category-btn">
+    <i class="fas fa-plus"></i> Add Category
+</button>
+{% endblock %}
+
+{% block content %}
+<div class="category-grid">
+    {% for cat, product_count in categories %}
+    <div class="category-card" id="category-{{ cat.id }}">
+        <div class="cat-icon">
+            <i class="{{ cat.icon }}"></i>
+        </div>
+        <div class="cat-info">
+            <div class="cat-name">{{ cat.name }}</div>
+            <div class="cat-count">{{ product_count }} product{{ 's' if product_count != 1 }} • {{ cat.description }}</div>
+        </div>
+        <div class="cat-actions">
+            <button class="btn btn-sm btn-secondary btn-icon" title="Edit"
+                    onclick="editCategory({{ cat.id }}, '{{ cat.name }}', '{{ cat.description }}', '{{ cat.icon }}')">
+                <i class="fas fa-pen"></i>
+            </button>
+            {% if product_count == 0 %}
+            <a href="/categories/delete/{{ cat.id }}" class="btn btn-sm btn-danger btn-icon" title="Delete"
+               onclick="return confirm('Delete this category?')">
+                <i class="fas fa-trash"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not categories %}
+<div class="empty-state">
+    <i class="fas fa-tags"></i>
+    <h4>No categories yet</h4>
+    <p>Add your first product category</p>
+</div>
+{% endif %}
+
+<!-- Add Category Modal -->
+<div class="modal-overlay" id="addCategoryModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Add Category</h3>
+            <button class="modal-close" onclick="this.closest('.modal-overlay').classList.remove('active')">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form method="POST" action="/categories/add">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Category Name *</label>
+                    <input type="text" name="name" class="form-control" required placeholder="e.g., Power Tools" id="cat-name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" name="description" class="form-control" placeholder="Brief description" id="cat-desc">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Icon Class</label>
+                    <input type="text" name="icon" class="form-control" value="fas fa-box" placeholder="FontAwesome class" id="cat-icon">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="this.closest('.modal-overlay').classList.remove('active')">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add Category</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Category Modal -->
+<div class="modal-overlay" id="editCategoryModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Edit Category</h3>
+            <button class="modal-close" onclick="this.closest('.modal-overlay').classList.remove('active')">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form method="POST" id="editCategoryForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Category Name *</label>
+                    <input type="text" name="name" class="form-control" required id="edit-cat-name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" name="description" class="form-control" id="edit-cat-desc">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Icon Class</label>
+                    <input type="text" name="icon" class="form-control" id="edit-cat-icon">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="this.closest('.modal-overlay').classList.remove('active')">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function editCategory(id, name, desc, icon) {
+    document.getElementById('editCategoryForm').action = '/categories/edit/' + id;
+    document.getElementById('edit-cat-name').value = name;
+    document.getElementById('edit-cat-desc').value = desc;
+    document.getElementById('edit-cat-icon').value = icon;
+    document.getElementById('editCategoryModal').classList.add('active');
+}
+</script>
+{% endblock %}

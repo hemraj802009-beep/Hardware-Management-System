@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% set active_page = "sales" %}
+
+{% block title %}Sales{% endblock %}
+{% block page_title %}Sales History{% endblock %}
+{% block breadcrumb %}Business / Sales{% endblock %}
+
+{% block topbar_actions %}
+<a href="/sales/pos" class="btn btn-primary btn-sm" id="new-sale-btn">
+    <i class="fas fa-cash-register"></i> New Sale (POS)
+</a>
+{% endblock %}
+
+{% block content %}
+<form method="GET" action="/sales">
+    <div class="search-bar">
+        <div class="search-input-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" name="q" placeholder="Search by invoice number..." value="{{ search }}" id="sale-search">
+        </div>
+        <select name="status" class="filter-select" onchange="this.form.submit()" id="status-filter">
+            <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All Status</option>
+            <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+            <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>Cancelled</option>
+        </select>
+        <button type="submit" class="btn btn-secondary btn-sm">
+            <i class="fas fa-filter"></i> Filter
+        </button>
+    </div>
+</form>
+
+<div class="card">
+    <div class="card-body no-padding">
+        {% if sales %}
+        <table class="data-table" id="sales-table">
+            <thead>
+                <tr>
+                    <th>Invoice</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Subtotal</th>
+                    <th>Tax</th>
+                    <th>Discount</th>
+                    <th>Total</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                <tr>
+                    <td>
+                        <a href="/sales/view/{{ sale.id }}" class="fw-semibold">{{ sale.invoice_number }}</a>
+                    </td>
+                    <td>
+                        <div>{{ sale.created_at.strftime('%b %d, %Y') }}</div>
+                        <div class="text-muted" style="font-size:11px;">{{ sale.created_at.strftime('%I:%M %p') }}</div>
+                    </td>
+                    <td>{{ sale.customer.name if sale.customer else 'Walk-in' }}</td>
+                    <td><span class="badge badge-info">{{ sale.items | length }}</span></td>
+                    <td>₹{{ "{:,.2f}".format(sale.subtotal) }}</td>
+                    <td class="text-muted">₹{{ "{:,.2f}".format(sale.tax_amount) }}</td>
+                    <td class="text-muted">
+                        {% if sale.discount_amount > 0 %}
+                        -₹{{ "{:,.2f}".format(sale.discount_amount) }}
+                        {% else %}—{% endif %}
+                    </td>
+                    <td class="fw-bold text-success">₹{{ "{:,.2f}".format(sale.total_amount) }}</td>
+                    <td><span class="badge badge-purple">{{ sale.payment_method }}</span></td>
+                    <td>
+                        {% if sale.status == 'completed' %}
+                        <span class="badge badge-success">Completed</span>
+                        {% elif sale.status == 'cancelled' %}
+                        <span class="badge badge-danger">Cancelled</span>
+                        {% else %}
+                        <span class="badge badge-warning">{{ sale.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="/sales/view/{{ sale.id }}" class="btn btn-sm btn-secondary btn-icon" title="View Invoice">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            {% if sale.status == 'completed' %}
+                            <a href="/sales/cancel/{{ sale.id }}" class="btn btn-sm btn-danger btn-icon" title="Cancel Sale"
+                               onclick="return confirm('Cancel this sale? Stock will be restored.')">
+                                <i class="fas fa-ban"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-receipt"></i>
+            <h4>No sales found</h4>
+            <p>Create a new sale from the POS terminal</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

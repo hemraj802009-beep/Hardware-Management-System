@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% set active_page = "purchases" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}Business / Purchase Orders / {{ title }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px;">
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-truck"></i> {{ title }}</h3>
+            <span class="badge badge-info">{{ po_number }}</span>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="/purchases/add" id="purchase-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Supplier *</label>
+                        <select name="supplier_id" class="form-control" required id="po-supplier">
+                            <option value="">Select Supplier</option>
+                            {% for sup in suppliers %}
+                            <option value="{{ sup.id }}">{{ sup.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Expected Delivery Date</label>
+                        <input type="date" name="expected_date" class="form-control" id="po-date">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <input type="text" name="notes" class="form-control" placeholder="Optional notes" id="po-notes">
+                </div>
+
+                <!-- Items -->
+                <div style="margin-top:24px; margin-bottom:16px;">
+                    <div class="d-flex justify-between align-center mb-2">
+                        <label class="form-label" style="margin:0;">Order Items</label>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="addPOItem()">
+                            <i class="fas fa-plus"></i> Add Item
+                        </button>
+                    </div>
+
+                    <table class="data-table" id="poItemsTable">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Unit Cost (₹)</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="poItemsBody">
+                            <tr id="poItem0">
+                                <td>
+                                    <select name="items[0][product_id]" class="form-control" required style="min-width:200px;">
+                                        <option value="">Select Product</option>
+                                        {% for p in products %}
+                                        <option value="{{ p.id }}" data-cost="{{ p.cost_price }}">{{ p.name }} ({{ p.sku }})</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td><input type="number" name="items[0][quantity]" class="form-control" min="1" value="10" required onchange="calcPOTotal()" style="width:90px;"></td>
+                                <td><input type="number" name="items[0][unit_cost]" class="form-control" min="0" step="0.01" value="0" required onchange="calcPOTotal()" style="width:110px;"></td>
+                                <td class="po-item-total fw-bold">₹0.00</td>
+                                <td><button type="button" class="btn btn-sm btn-danger btn-icon" onclick="removePOItem(this)"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" style="text-align:right; font-weight:700;">Grand Total:</td>
+                                <td class="fw-bold text-success" id="poGrandTotal">₹0.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="d-flex gap-1 mt-2">
+                    <button type="submit" class="btn btn-primary" id="po-submit">
+                        <i class="fas fa-save"></i> Create Purchase Order
+                    </button>
+                    <a href="/purchases" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let poItemIdx = 1;
+
+function addPOItem() {
+    const tbody = document.getElementById('poItemsBody');
+    const products = document.querySelector('select[name="items[0][product_id]"]').innerHTML;
+    const row = document.createElement('tr');
+    row.id = 'poItem' + poItemIdx;
+    row.innerHTML = `
+        <td><select name="items[${poItemIdx}][product_id]" class="form-control" required style="min-width:200px;">${products}</select></td>
+        <td><input type="number" name="items[${poItemIdx}][quantity]" class="form-control" min="1" value="10" required onchange="calcPOTotal()" style="width:90px;"></td>
+        <td><input type="number" name="items[${poItemIdx}][unit_cost]" class="form-control" min="0" step="0.01" value="0" required onchange="calcPOTotal()" style="width:110px;"></td>
+        <td class="po-item-total fw-bold">₹0.00</td>
+        <td><button type="button" class="btn btn-sm btn-danger btn-icon" onclick="removePOItem(this)"><i class="fas fa-trash"></i></button></td>
+    `;
+    tbody.appendChild(row);
+    poItemIdx++;
+
+    // Auto-fill cost when product selected
+    row.querySelector('select').addEventListener('change', function() {
+        const opt = this.options[this.selectedIndex];
+        const cost = opt.dataset.cost || 0;
+        row.querySelector('input[name*="unit_cost"]').value = cost;
+        calcPOTotal();
+    });
+}
+
+function removePOItem(btn) {
+    const tbody = document.getElementById('poItemsBody');
+    if (tbody.rows.length > 1) {
+        btn.closest('tr').remove();
+        calcPOTotal();
+    }
+}
+
+function calcPOTotal() {
+    let grand = 0;
+    document.querySelectorAll('#poItemsBody tr').forEach(row => {
+        const qty = parseFloat(row.querySelector('input[name*="quantity"]')?.value) || 0;
+        const cost = parseFloat(row.querySelector('input[name*="unit_cost"]')?.value) || 0;
+        const total = qty * cost;
+        grand += total;
+        row.querySelector('.po-item-total').textContent = '₹' + total.toLocaleString('en-IN', {minimumFractionDigits:2});
+    });
+    document.getElementById('poGrandTotal').textContent = '₹' + grand.toLocaleString('en-IN', {minimumFractionDigits:2});
+}
+
+// Auto-fill cost on first item product change
+document.querySelector('select[name="items[0][product_id]"]').addEventListener('change', function() {
+    const opt = this.options[this.selectedIndex];
+    document.querySelector('input[name="items[0][unit_cost]"]').value = opt.dataset.cost || 0;
+    calcPOTotal();
+});
+</script>
+{% endblock %}

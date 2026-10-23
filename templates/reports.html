@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% set active_page = "reports" %}
+
+{% block title %}Reports{% endblock %}
+{% block page_title %}Reports & Analytics{% endblock %}
+{% block breadcrumb %}Analytics / Reports{% endblock %}
+
+{% block content %}
+<!-- Report Type Tabs -->
+<div class="d-flex justify-between align-center mb-3" style="flex-wrap:wrap; gap:12px;">
+    <div class="report-tabs">
+        <a href="/reports?type=sales&period={{ period }}" class="report-tab {% if report_type == 'sales' %}active{% endif %}">
+            <i class="fas fa-chart-line"></i> Sales
+        </a>
+        <a href="/reports?type=products&period={{ period }}" class="report-tab {% if report_type == 'products' %}active{% endif %}">
+            <i class="fas fa-box"></i> Products
+        </a>
+        <a href="/reports?type=inventory&period={{ period }}" class="report-tab {% if report_type == 'inventory' %}active{% endif %}">
+            <i class="fas fa-warehouse"></i> Inventory
+        </a>
+        <a href="/reports?type=customers&period={{ period }}" class="report-tab {% if report_type == 'customers' %}active{% endif %}">
+            <i class="fas fa-users"></i> Customers
+        </a>
+    </div>
+    <div class="d-flex gap-1">
+        <a href="/reports?type={{ report_type }}&period=7" class="btn btn-sm {% if period == '7' %}btn-primary{% else %}btn-secondary{% endif %}">7 Days</a>
+        <a href="/reports?type={{ report_type }}&period=30" class="btn btn-sm {% if period == '30' %}btn-primary{% else %}btn-secondary{% endif %}">30 Days</a>
+        <a href="/reports?type={{ report_type }}&period=90" class="btn btn-sm {% if period == '90' %}btn-primary{% else %}btn-secondary{% endif %}">90 Days</a>
+    </div>
+</div>
+
+<!-- Sales Report -->
+{% if report_type == 'sales' %}
+<div class="stats-grid mb-3">
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">₹{{ "{:,.0f}".format(report_data.total_revenue) }}</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+            <div class="stat-icon green"><i class="fas fa-rupee-sign"></i></div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">{{ report_data.total_orders }}</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+            <div class="stat-icon blue"><i class="fas fa-receipt"></i></div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">₹{{ "{:,.0f}".format(report_data.avg_order) }}</div>
+                <div class="stat-label">Average Order</div>
+            </div>
+            <div class="stat-icon purple"><i class="fas fa-calculator"></i></div>
+        </div>
+    </div>
+</div>
+
+<div class="grid-2 mb-3">
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-chart-area"></i> Daily Revenue</h3>
+        </div>
+        <div class="card-body">
+            <div class="chart-container" style="height:300px;">
+                <canvas id="reportSalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-credit-card"></i> Payment Methods</h3>
+        </div>
+        <div class="card-body no-padding">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Method</th><th>Orders</th><th>Amount</th></tr>
+                </thead>
+                <tbody>
+                    {% for method, count, amount in report_data.payment_methods %}
+                    <tr>
+                        <td><span class="badge badge-purple">{{ method | upper }}</span></td>
+                        <td>{{ count }}</td>
+                        <td class="fw-bold text-success">₹{{ "{:,.2f}".format(amount) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Products Report -->
+{% elif report_type == 'products' %}
+<div class="grid-2 mb-3">
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-fire"></i> Top Selling Products</h3>
+        </div>
+        <div class="card-body no-padding">
+            <table class="data-table">
+                <thead>
+                    <tr><th>#</th><th>Product</th><th>SKU</th><th>Qty</th><th>Revenue</th></tr>
+                </thead>
+                <tbody>
+                    {% for name, sku, qty, revenue in report_data.top_products %}
+                    <tr>
+                        <td><span class="badge badge-purple">{{ loop.index }}</span></td>
+                        <td class="fw-semibold">{{ name }}</td>
+                        <td class="text-muted">{{ sku }}</td>
+                        <td>{{ qty }}</td>
+                        <td class="fw-bold text-success">₹{{ "{:,.2f}".format(revenue) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-chart-pie"></i> Category Performance</h3>
+        </div>
+        <div class="card-body no-padding">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Category</th><th>Qty Sold</th><th>Revenue</th></tr>
+                </thead>
+                <tbody>
+                    {% for name, qty, revenue in report_data.category_perf %}
+                    <tr>
+                        <td class="fw-semibold">{{ name }}</td>
+                        <td>{{ qty }}</td>
+                        <td class="fw-bold text-success">₹{{ "{:,.2f}".format(revenue) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% if report_data.slow_products %}
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-snail text-warning"></i> Slow-Moving Products (No Sales in Period)</h3>
+    </div>
+    <div class="card-body no-padding">
+        <table class="data-table">
+            <thead>
+                <tr><th>Product</th><th>SKU</th><th>Stock</th><th>Price</th></tr>
+            </thead>
+            <tbody>
+                {% for p in report_data.slow_products[:15] %}
+                <tr>
+                    <td class="fw-semibold">{{ p.name }}</td>
+                    <td class="text-muted">{{ p.sku }}</td>
+                    <td>{{ p.quantity }} {{ p.unit }}</td>
+                    <td>₹{{ "{:,.2f}".format(p.selling_price) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<!-- Inventory Report -->
+{% elif report_type == 'inventory' %}
+<div class="stats-grid mb-3">
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">{{ "{:,}".format(report_data.total_items) }}</div>
+                <div class="stat-label">Total Items in Stock</div>
+            </div>
+            <div class="stat-icon blue"><i class="fas fa-boxes"></i></div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">₹{{ "{:,.0f}".format(report_data.total_value) }}</div>
+                <div class="stat-label">Cost Value</div>
+            </div>
+            <div class="stat-icon orange"><i class="fas fa-coins"></i></div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">₹{{ "{:,.0f}".format(report_data.total_retail) }}</div>
+                <div class="stat-label">Retail Value</div>
+            </div>
+            <div class="stat-icon green"><i class="fas fa-rupee-sign"></i></div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-header">
+            <div>
+                <div class="stat-value">₹{{ "{:,.0f}".format(report_data.potential_profit) }}</div>
+                <div class="stat-label">Potential Profit</div>
+            </div>
+            <div class="stat-icon purple"><i class="fas fa-chart-line"></i></div>
+        </div>
+    </div>
+</div>
+
+<div class="grid-2 mb-3">
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-layer-group"></i> Stock by Category</h3>
+        </div>
+        <div class="card-body no-padding">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Category</th><th>Products</th><th>Qty</th><th>Value</th></tr>
+                </thead>
+                <tbody>
+                    {% for name, count, qty, value in report_data.stock_by_category %}
+                    <tr>
+                        <td class="fw-semibold">{{ name }}</td>
+                        <td>{{ count }}</td>
+                        <td>{{ qty }}</td>
+                        <td class="fw-bold">₹{{ "{:,.2f}".format(value) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-exclamation-triangle text-warning"></i> Low Stock ({{ report_data.low_stock | length }})</h3>
+        </div>
+        <div class="card-body no-padding">
+            {% if report_data.low_stock %}
+            <table class="data-table">
+                <thead>
+                    <tr><th>Product</th><th>Stock</th><th>Min</th></tr>
+                </thead>
+                <tbody>
+                    {% for p in report_data.low_stock[:15] %}
+                    <tr>
+                        <td class="fw-semibold">{{ p.name }}</td>
+                        <td class="{% if p.quantity == 0 %}text-danger{% else %}text-warning{% endif %} fw-bold">{{ p.quantity }}</td>
+                        <td class="text-muted">{{ p.min_stock }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-check-circle text-success"></i>
+                <h4>All stock levels healthy</h4>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Customer Report -->
+{% elif report_type == 'customers' %}
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-trophy"></i> Top Customers</h3>
+    </div>
+    <div class="card-body no-padding">
+        {% if report_data.top_customers %}
+        <table class="data-table">
+            <thead>
+                <tr><th>#</th><th>Customer</th><th>Phone</th><th>Orders</th><th>Total Spent</th></tr>
+            </thead>
+            <tbody>
+                {% for name, phone, orders, spent in report_data.top_customers %}
+                <tr>
+                    <td><span class="badge badge-purple">{{ loop.index }}</span></td>
+                    <td class="fw-semibold">{{ name }}</td>
+                    <td class="text-muted">{{ phone or '—' }}</td>
+                    <td><span class="badge badge-info">{{ orders }}</span></td>
+                    <td class="fw-bold text-success">₹{{ "{:,.2f}".format(spent) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-users"></i>
+            <h4>No customer data in this period</h4>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if report_type == 'sales' %}
+<script>
+const ctx = document.getElementById('reportSalesChart').getContext('2d');
+const data = {{ report_data.daily_sales | tojson }};
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: data.map(d => d.display_date),
+        datasets: [{
+            label: 'Revenue (₹)',
+            data: data.map(d => d.total),
+            backgroundColor: 'rgba(99, 102, 241, 0.6)',
+            borderColor: '#6366f1',
+            borderWidth: 1,
+            borderRadius: 4,
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: '#1e2130',
+                titleColor: '#f1f3f9',
+                bodyColor: '#8b8fa7',
+                borderColor: 'rgba(255,255,255,0.1)',
+                borderWidth: 1,
+                padding: 12,
+                cornerRadius: 8,
+                callbacks: {
+                    label: function(ctx) { return '₹' + ctx.parsed.y.toLocaleString(); }
+                }
+            }
+        },
+        scales: {
+            x: {
+                grid: { display: false },
+                ticks: { color: '#5c6078', font: { size: 10 }, maxTicksLimit: 15 }
+            },
+            y: {
+                grid: { color: 'rgba(255,255,255,0.04)' },
+                ticks: {
+                    color: '#5c6078',
+                    font: { size: 11 },
+                    callback: v => '₹' + (v/1000).toFixed(0) + 'k'
+                }
+            }
+        }
+    }
+});
+</script>
+{% endif %}
+{% endblock %}

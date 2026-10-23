@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% set active_page = "customers" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}Business / Customers / {{ title }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 700px;">
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-user"></i> {{ title }}</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="/customers/{% if customer %}edit/{{ customer.id }}{% else %}add{% endif %}" id="customer-form">
+                <div class="form-group">
+                    <label class="form-label">Customer Name *</label>
+                    <input type="text" name="name" class="form-control" required
+                           value="{{ customer.name if customer else '' }}" placeholder="e.g., Ramesh Construction" id="customer-name">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control"
+                               value="{{ customer.email if customer else '' }}" placeholder="email@example.com" id="customer-email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="text" name="phone" class="form-control"
+                               value="{{ customer.phone if customer else '' }}" placeholder="+91-9876543210" id="customer-phone">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">City</label>
+                    <input type="text" name="city" class="form-control"
+                           value="{{ customer.city if customer else '' }}" placeholder="City" id="customer-city">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <textarea name="address" class="form-control" placeholder="Full address" id="customer-address">{{ customer.address if customer else '' }}</textarea>
+                </div>
+
+                <div class="d-flex gap-1 mt-2">
+                    <button type="submit" class="btn btn-primary" id="customer-submit">
+                        <i class="fas fa-save"></i> {{ 'Update' if customer else 'Add' }} Customer
+                    </button>
+                    <a href="/customers" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

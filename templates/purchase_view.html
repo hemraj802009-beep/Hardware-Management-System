@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% set active_page = "purchases" %}
+
+{% block title %}PO {{ purchase.po_number }}{% endblock %}
+{% block page_title %}Purchase Order{% endblock %}
+{% block breadcrumb %}Business / Purchase Orders / {{ purchase.po_number }}{% endblock %}
+
+{% block topbar_actions %}
+<a href="/purchases" class="btn btn-secondary btn-sm">
+    <i class="fas fa-arrow-left"></i> Back
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="invoice-container">
+    <div class="invoice-header">
+        <div class="invoice-brand">
+            <h2>Purchase Order</h2>
+            <p>{{ purchase.po_number }}</p>
+        </div>
+        <div class="invoice-info">
+            <h3>
+                {% if purchase.status == 'received' %}
+                <span class="badge badge-success">Received</span>
+                {% elif purchase.status == 'ordered' %}
+                <span class="badge badge-warning">Ordered</span>
+                {% else %}
+                <span class="badge badge-danger">Cancelled</span>
+                {% endif %}
+            </h3>
+            <p>
+                Created: {{ purchase.created_at.strftime('%B %d, %Y') }}<br>
+                {% if purchase.expected_date %}Expected: {{ purchase.expected_date.strftime('%B %d, %Y') }}<br>{% endif %}
+                {% if purchase.received_date %}Received: {{ purchase.received_date.strftime('%B %d, %Y') }}{% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 24px;">
+        <div class="form-label" style="margin-bottom:8px;">Supplier</div>
+        <div class="fw-semibold">{{ purchase.supplier.name }}</div>
+        {% if purchase.supplier.contact_person %}<div class="text-muted" style="font-size:12px;">{{ purchase.supplier.contact_person }}</div>{% endif %}
+        {% if purchase.supplier.phone %}<div class="text-muted" style="font-size:12px;">{{ purchase.supplier.phone }}</div>{% endif %}
+    </div>
+
+    <table class="data-table" style="margin-bottom:24px;">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Unit Cost</th>
+                <th>Qty</th>
+                <th style="text-align:right;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in purchase.items %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    <div class="fw-semibold">{{ item.product.name }}</div>
+                    <div class="text-muted" style="font-size:11px;">{{ item.product.sku }}</div>
+                </td>
+                <td>₹{{ "{:,.2f}".format(item.unit_cost) }}</td>
+                <td>{{ item.quantity }}</td>
+                <td style="text-align:right;" class="fw-bold">₹{{ "{:,.2f}".format(item.total_cost) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="display:flex; justify-content:flex-end;">
+        <div style="width:250px;">
+            <div class="cart-totals">
+                <div class="total-row grand-total">
+                    <span>Total</span>
+                    <span>₹{{ "{:,.2f}".format(purchase.total_amount) }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if purchase.notes %}
+    <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border-color);">
+        <div class="form-label" style="margin-bottom:4px;">Notes</div>
+        <div class="text-muted" style="font-size:13px;">{{ purchase.notes }}</div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% set active_page = "sales" %}
+
+{% block title %}Invoice {{ sale.invoice_number }}{% endblock %}
+{% block page_title %}Invoice{% endblock %}
+{% block breadcrumb %}Sales / Invoice {{ sale.invoice_number }}{% endblock %}
+
+{% block topbar_actions %}
+<button class="btn btn-secondary btn-sm no-print" onclick="window.print()">
+    <i class="fas fa-print"></i> Print
+</button>
+<a href="/sales" class="btn btn-secondary btn-sm no-print">
+    <i class="fas fa-arrow-left"></i> Back to Sales
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="invoice-container">
+    <div class="invoice-header">
+        <div class="invoice-brand">
+            <h2>🔧 HardwareHub</h2>
+            <p>Hardware Store Management System</p>
+        </div>
+        <div class="invoice-info">
+            <h3>INVOICE</h3>
+            <p>
+                <strong>{{ sale.invoice_number }}</strong><br>
+                Date: {{ sale.created_at.strftime('%B %d, %Y') }}<br>
+                Time: {{ sale.created_at.strftime('%I:%M %p') }}
+            </p>
+        </div>
+    </div>
+
+    {% if sale.customer %}
+    <div style="margin-bottom: 24px;">
+        <div class="form-label" style="margin-bottom:8px;">Bill To</div>
+        <div class="fw-semibold">{{ sale.customer.name }}</div>
+        {% if sale.customer.phone %}<div class="text-muted" style="font-size:12px;">{{ sale.customer.phone }}</div>{% endif %}
+        {% if sale.customer.address %}<div class="text-muted" style="font-size:12px;">{{ sale.customer.address }}</div>{% endif %}
+    </div>
+    {% endif %}
+
+    <table class="data-table" style="margin-bottom:24px;">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Unit Price</th>
+                <th>Qty</th>
+                <th style="text-align:right;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in sale.items %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    <div class="fw-semibold">{{ item.product.name }}</div>
+                    <div class="text-muted" style="font-size:11px;">{{ item.product.sku }}</div>
+                </td>
+                <td>₹{{ "{:,.2f}".format(item.unit_price) }}</td>
+                <td>{{ item.quantity }}</td>
+                <td style="text-align:right;" class="fw-bold">₹{{ "{:,.2f}".format(item.total_price) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="display:flex; justify-content:flex-end;">
+        <div style="width:280px;">
+            <div class="cart-totals">
+                <div class="total-row">
+                    <span class="label">Subtotal</span>
+                    <span>₹{{ "{:,.2f}".format(sale.subtotal) }}</span>
+                </div>
+                <div class="total-row">
+                    <span class="label">Tax (GST 18%)</span>
+                    <span>₹{{ "{:,.2f}".format(sale.tax_amount) }}</span>
+                </div>
+                {% if sale.discount_amount > 0 %}
+                <div class="total-row">
+                    <span class="label">Discount</span>
+                    <span class="text-danger">-₹{{ "{:,.2f}".format(sale.discount_amount) }}</span>
+                </div>
+                {% endif %}
+                <div class="total-row grand-total">
+                    <span>Grand Total</span>
+                    <span>₹{{ "{:,.2f}".format(sale.total_amount) }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted);">
+        <div>
+            <span class="badge {% if sale.status == 'completed' %}badge-success{% else %}badge-danger{% endif %}">
+                {{ sale.status | upper }}
+            </span>
+            <span class="badge badge-purple" style="margin-left:4px;">{{ sale.payment_method | upper }}</span>
+        </div>
+        <div>Thank you for your purchase!</div>
+    </div>
+</div>
+{% endblock %}

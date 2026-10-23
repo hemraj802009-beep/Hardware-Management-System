@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% set active_page = "products" %}
+
+{% block title %}Products{% endblock %}
+{% block page_title %}Products{% endblock %}
+{% block breadcrumb %}Inventory / Products{% endblock %}
+
+{% block topbar_actions %}
+<a href="/products/add" class="btn btn-primary btn-sm" id="add-product-btn">
+    <i class="fas fa-plus"></i> Add Product
+</a>
+{% endblock %}
+
+{% block content %}
+<form method="GET" action="/products">
+    <div class="search-bar">
+        <div class="search-input-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" name="q" placeholder="Search products by name or SKU..." value="{{ search }}" id="product-search">
+        </div>
+        <select name="cat" class="filter-select" onchange="this.form.submit()" id="category-filter">
+            <option value="0">All Categories</option>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}" {% if cat.id == category_id %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="stock" class="filter-select" onchange="this.form.submit()" id="stock-filter">
+            <option value="all" {% if stock_filter == 'all' %}selected{% endif %}>All Stock</option>
+            <option value="low" {% if stock_filter == 'low' %}selected{% endif %}>Low Stock</option>
+            <option value="out" {% if stock_filter == 'out' %}selected{% endif %}>Out of Stock</option>
+        </select>
+        <button type="submit" class="btn btn-secondary btn-sm">
+            <i class="fas fa-filter"></i> Filter
+        </button>
+    </div>
+</form>
+
+<div class="card">
+    <div class="card-body no-padding">
+        {% if products %}
+        <table class="data-table" id="products-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>SKU</th>
+                    <th>Category</th>
+                    <th>Cost</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>
+                        <div class="fw-semibold">{{ product.name }}</div>
+                        {% if product.supplier %}
+                        <div class="text-muted" style="font-size:11px;">{{ product.supplier.name }}</div>
+                        {% endif %}
+                    </td>
+                    <td><span class="badge badge-info">{{ product.sku }}</span></td>
+                    <td>
+                        {% if product.category %}
+                        <span class="badge badge-purple">{{ product.category.name }}</span>
+                        {% else %}
+                        <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                    <td>₹{{ "{:,.2f}".format(product.cost_price) }}</td>
+                    <td class="fw-bold">₹{{ "{:,.2f}".format(product.selling_price) }}</td>
+                    <td>
+                        {% if product.quantity == 0 %}
+                        <span class="badge badge-danger">Out of Stock</span>
+                        {% elif product.quantity <= product.min_stock %}
+                        <span class="badge badge-warning">{{ product.quantity }} {{ product.unit }}</span>
+                        {% else %}
+                        <span class="badge badge-success">{{ product.quantity }} {{ product.unit }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-muted">{{ product.location or '—' }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="/products/edit/{{ product.id }}" class="btn btn-sm btn-secondary btn-icon" title="Edit">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="/products/delete/{{ product.id }}" class="btn btn-sm btn-danger btn-icon" title="Delete"
+                               onclick="return confirm('Are you sure you want to delete this product?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-box-open"></i>
+            <h4>No products found</h4>
+            <p>Try adjusting your filters or add a new product</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mt-2 text-muted" style="font-size:12px;">
+    Showing {{ products|length }} products
+</div>
+{% endblock %}

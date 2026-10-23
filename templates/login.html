@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to Hardware Store Management System">
+    <title>Login | HardwareHub</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-card">
+            <div class="login-brand">
+                <div class="login-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h1>HardwareHub</h1>
+                <p>Sign in to your management dashboard</p>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="/login">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" placeholder="Enter your username" required autofocus id="login-username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Enter your password" required id="login-password">
+                </div>
+                <button type="submit" class="btn btn-primary" id="login-submit">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </button>
+            </form>
+
+            <div class="mt-3 text-center" style="font-size:12px; color: var(--text-muted);">
+                Default: <strong>admin</strong> / <strong>admin123</strong>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

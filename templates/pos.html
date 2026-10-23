@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+{% set active_page = "pos" %}
+
+{% block title %}Point of Sale{% endblock %}
+{% block page_title %}Point of Sale{% endblock %}
+{% block breadcrumb %}POS Terminal{% endblock %}
+
+{% block content %}
+<div class="pos-layout">
+    <!-- Product Search & Grid -->
+    <div class="pos-products">
+        <div class="search-bar" style="margin-bottom:16px;">
+            <div class="search-input-wrap" style="flex:1;">
+                <i class="fas fa-search"></i>
+                <input type="text" id="posSearch" placeholder="Search products by name or SKU..." onkeyup="filterProducts()" autofocus>
+            </div>
+        </div>
+        <div class="pos-product-grid" id="posProductGrid">
+            {% for product in products %}
+            <div class="pos-product-card" onclick="addToCart({{ product.id }}, '{{ product.name | e }}', {{ product.selling_price }}, {{ product.quantity }}, '{{ product.unit }}')"
+                 data-name="{{ product.name | lower }}" data-sku="{{ product.sku | lower }}" id="pos-prod-{{ product.id }}">
+                <div class="product-name">{{ product.name }}</div>
+                <div class="product-sku">{{ product.sku }}</div>
+                <div class="product-meta">
+                    <div class="product-price">₹{{ "{:,.2f}".format(product.selling_price) }}</div>
+                    <div class="product-stock">{{ product.quantity }} {{ product.unit }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Cart -->
+    <div class="pos-cart">
+        <div class="pos-cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Shopping Cart <span id="cartCount" class="badge badge-info" style="margin-left:auto;">0</span></h3>
+        </div>
+
+        <div class="pos-cart-items" id="cartItems">
+            <div class="empty-state" id="cartEmpty">
+                <i class="fas fa-shopping-basket" style="font-size:32px;"></i>
+                <h4>Cart is empty</h4>
+                <p>Click products to add them</p>
+            </div>
+        </div>
+
+        <div class="pos-cart-footer">
+            <div style="margin-bottom:12px;">
+                <div class="form-row">
+                    <div class="form-group" style="margin-bottom:10px;">
+                        <label class="form-label" style="font-size:10px;">Customer</label>
+                        <select id="posCustomer" class="form-control" style="padding:8px 10px; font-size:12px;">
+                            <option value="">Walk-in Customer</option>
+                            {% for customer in customers %}
+                            <option value="{{ customer.id }}">{{ customer.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                        <label class="form-label" style="font-size:10px;">Payment</label>
+                        <select id="posPayment" class="form-control" style="padding:8px 10px; font-size:12px;">
+                            <option value="cash">Cash</option>
+                            <option value="card">Card</option>
+                            <option value="upi">UPI</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label" style="font-size:10px;">Discount (%)</label>
+                    <input type="number" id="posDiscount" class="form-control" value="0" min="0" max="100"
+                           style="padding:8px 10px; font-size:12px;" onchange="updateTotals()">
+                </div>
+            </div>
+
+            <div class="cart-totals">
+                <div class="total-row">
+                    <span class="label">Subtotal</span>
+                    <span id="cartSubtotal">₹0.00</span>
+                </div>
+                <div class="total-row">
+                    <span class="label">Tax (18% GST)</span>
+                    <span id="cartTax">₹0.00</span>
+                </div>
+                <div class="total-row">
+                    <span class="label">Discount</span>
+                    <span id="cartDiscount">-₹0.00</span>
+                </div>
+                <div class="total-row grand-total">
+                    <span>Grand Total</span>
+                    <span id="cartTotal">₹0.00</span>
+                </div>
+            </div>
+
+            <button class="btn btn-success mt-2" style="width:100%; justify-content:center; padding:14px; font-size:15px;"
+                    onclick="checkout()" id="checkoutBtn">
+                <i class="fas fa-check-circle"></i> Complete Sale
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="successModal">
+    <div class="modal">
+        <div class="modal-body" style="text-align:center; padding:40px;">
+            <div style="width:64px; height:64px; background:var(--success-bg); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:var(--success);">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3 style="margin-bottom:8px;">Sale Completed!</h3>
+            <p class="text-muted" style="margin-bottom:4px;">Invoice: <strong id="successInvoice"></strong></p>
+            <p class="text-success fw-bold" style="font-size:24px; margin-bottom:24px;" id="successTotal"></p>
+            <div class="d-flex gap-1" style="justify-content:center;">
+                <a id="viewInvoiceBtn" href="#" class="btn btn-primary">
+                    <i class="fas fa-eye"></i> View Invoice
+                </a>
+                <button class="btn btn-secondary" onclick="closeSuccess()">
+                    <i class="fas fa-plus"></i> New Sale
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let cart = [];
+
+function filterProducts() {
+    const q = document.getElementById('posSearch').value.toLowerCase();
+    document.querySelectorAll('.pos-product-card').forEach(card => {
+        const name = card.dataset.name;
+        const sku = card.dataset.sku;
+        card.style.display = (name.includes(q) || sku.includes(q)) ? '' : 'none';
+    });
+}
+
+function addToCart(id, name, price, maxQty, unit) {
+    const existing = cart.find(item => item.product_id === id);
+    if (existing) {
+        if (existing.quantity >= maxQty) {
+            alert('Maximum available stock reached!');
+            return;
+        }
+        existing.quantity++;
+    } else {
+        cart.push({ product_id: id, name, price, quantity: 1, maxQty, unit });
+    }
+    renderCart();
+}
+
+function updateQty(id, delta) {
+    const item = cart.find(i => i.product_id === id);
+    if (!item) return;
+    item.quantity += delta;
+    if (item.quantity <= 0) {
+        cart = cart.filter(i => i.product_id !== id);
+    } else if (item.quantity > item.maxQty) {
+        item.quantity = item.maxQty;
+        alert('Maximum available stock reached!');
+    }
+    renderCart();
+}
+
+function removeFromCart(id) {
+    cart = cart.filter(i => i.product_id !== id);
+    renderCart();
+}
+
+function renderCart() {
+    const container = document.getElementById('cartItems');
+    const empty = document.getElementById('cartEmpty');
+    document.getElementById('cartCount').textContent = cart.length;
+
+    if (cart.length === 0) {
+        container.innerHTML = '';
+        container.appendChild(empty);
+        empty.style.display = '';
+        updateTotals();
+        return;
+    }
+
+    let html = '';
+    cart.forEach(item => {
+        const total = item.price * item.quantity;
+        html += `
+        <div class="cart-item">
+            <div class="item-info">
+                <div class="item-name">${item.name}</div>
+                <div class="item-price">₹${item.price.toLocaleString()} × ${item.quantity} ${item.unit}</div>
+            </div>
+            <div class="item-qty">
+                <button onclick="updateQty(${item.product_id}, -1)"><i class="fas fa-minus"></i></button>
+                <span>${item.quantity}</span>
+                <button onclick="updateQty(${item.product_id}, 1)"><i class="fas fa-plus"></i></button>
+            </div>
+            <div class="item-total">₹${total.toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+            <button class="item-remove" onclick="removeFromCart(${item.product_id})">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>`;
+    });
+    container.innerHTML = html;
+    updateTotals();
+}
+
+function updateTotals() {
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const tax = subtotal * 0.18;
+    const discountPct = parseFloat(document.getElementById('posDiscount').value) || 0;
+    const discount = subtotal * (discountPct / 100);
+    const total = subtotal + tax - discount;
+
+    document.getElementById('cartSubtotal').textContent = '₹' + subtotal.toLocaleString('en-IN', {minimumFractionDigits:2});
+    document.getElementById('cartTax').textContent = '₹' + tax.toLocaleString('en-IN', {minimumFractionDigits:2});
+    document.getElementById('cartDiscount').textContent = '-₹' + discount.toLocaleString('en-IN', {minimumFractionDigits:2});
+    document.getElementById('cartTotal').textContent = '₹' + total.toLocaleString('en-IN', {minimumFractionDigits:2});
+}
+
+async function checkout() {
+    if (cart.length === 0) {
+        alert('Cart is empty!');
+        return;
+    }
+
+    const btn = document.getElementById('checkoutBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+    try {
+        const resp = await fetch('/sales/pos/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                items: cart.map(i => ({ product_id: i.product_id, quantity: i.quantity })),
+                customer_id: document.getElementById('posCustomer').value || null,
+                payment_method: document.getElementById('posPayment').value,
+                discount: parseFloat(document.getElementById('posDiscount').value) || 0,
+            })
+        });
+
+        const data = await resp.json();
+        if (data.success) {
+            document.getElementById('successInvoice').textContent = data.invoice_number;
+            document.getElementById('successTotal').textContent = '₹' + data.total.toLocaleString('en-IN', {minimumFractionDigits:2});
+            document.getElementById('viewInvoiceBtn').href = '/sales/view/' + data.sale_id;
+            document.getElementById('successModal').classList.add('active');
+        } else {
+            alert(data.error || 'Checkout failed');
+        }
+    } catch (err) {
+        alert('Network error: ' + err.message);
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-check-circle"></i> Complete Sale';
+}
+
+function closeSuccess() {
+    document.getElementById('successModal').classList.remove('active');
+    cart = [];
+    renderCart();
+    document.getElementById('posDiscount').value = 0;
+    window.location.reload();
+}
+</script>
+{% endblock %}

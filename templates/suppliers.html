@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% set active_page = "suppliers" %}
+
+{% block title %}Suppliers{% endblock %}
+{% block page_title %}Suppliers{% endblock %}
+{% block breadcrumb %}Business / Suppliers{% endblock %}
+
+{% block topbar_actions %}
+<a href="/suppliers/add" class="btn btn-primary btn-sm" id="add-supplier-btn">
+    <i class="fas fa-plus"></i> Add Supplier
+</a>
+{% endblock %}
+
+{% block content %}
+<form method="GET" action="/suppliers">
+    <div class="search-bar">
+        <div class="search-input-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" name="q" placeholder="Search suppliers..." value="{{ search }}" id="supplier-search">
+        </div>
+        <button type="submit" class="btn btn-secondary btn-sm">
+            <i class="fas fa-search"></i> Search
+        </button>
+    </div>
+</form>
+
+<div class="supplier-grid">
+    {% for sup, product_count in suppliers %}
+    <div class="supplier-card" id="supplier-{{ sup.id }}">
+        <div class="supplier-header">
+            <div>
+                <div class="supplier-name">{{ sup.name }}</div>
+                <div class="supplier-contact">{{ sup.contact_person }}</div>
+            </div>
+            <div class="btn-group">
+                <a href="/suppliers/edit/{{ sup.id }}" class="btn btn-sm btn-secondary btn-icon" title="Edit">
+                    <i class="fas fa-pen"></i>
+                </a>
+                <a href="/suppliers/delete/{{ sup.id }}" class="btn btn-sm btn-danger btn-icon" title="Delete"
+                   onclick="return confirm('Remove this supplier?')">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        </div>
+        <div class="supplier-details">
+            {% if sup.email %}
+            <div class="detail-row">
+                <i class="fas fa-envelope"></i> {{ sup.email }}
+            </div>
+            {% endif %}
+            {% if sup.phone %}
+            <div class="detail-row">
+                <i class="fas fa-phone"></i> {{ sup.phone }}
+            </div>
+            {% endif %}
+            {% if sup.city %}
+            <div class="detail-row">
+                <i class="fas fa-map-marker-alt"></i> {{ sup.city }}
+            </div>
+            {% endif %}
+            <div class="detail-row">
+                <i class="fas fa-box"></i>
+                <span class="badge badge-info">{{ product_count }} product{{ 's' if product_count != 1 }}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not suppliers %}
+<div class="empty-state">
+    <i class="fas fa-building"></i>
+    <h4>No suppliers found</h4>
+    <p>Add suppliers to track your inventory sources</p>
+</div>
+{% endif %}
+{% endblock %}
