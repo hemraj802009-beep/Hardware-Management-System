@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Sharma Hardware</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:Inter,sans-serif;background:#f8fafc;color:#1e293b}
+        header{background:#1b4d2e;color:white;padding:0.9rem 2rem}
+        .logo{color:white;text-decoration:none;font-weight:700}
+        .container{max-width:1100px;margin:0 auto;padding:2rem;display:grid;grid-template-columns:2fr 1fr;gap:1.5rem}
+        .form-card,.summary{background:white;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,0.06)}
+        .header-row{padding:1rem 1.4rem;border-bottom:1px solid #eef2f7}
+        .form-body{padding:1.4rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+        .form-group{display:flex;flex-direction:column;gap:0.5rem}
+        .form-group.full{grid-column:1/-1}
+        input,textarea{padding:0.7rem;border:1px solid #d7e3dc;border-radius:8px;font-family:Inter}
+        .summary-body{padding:1.4rem}
+        .row{display:flex;justify-content:space-between;margin-bottom:0.8rem}
+        .total{font-weight:700;font-size:1.1rem}
+        .btn{display:block;text-align:center;padding:0.9rem;border-radius:999px;text-decoration:none;font-weight:600;background:#1b4d2e;color:white;margin-top:1rem}
+        .back{display:inline-block;margin:1rem 0;color:#1b4d2e;text-decoration:none}
+        @media(max-width:900px){.container{grid-template-columns:1fr}.form-body{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <header><a class="logo" href="sharma_pro.html"><i class="fas fa-tools"></i> Sharma Hardware</a></header>
+    <main class="container">
+        <div>
+            <a class="back" href="sharma_cart.html"><i class="fas fa-arrow-left"></i> Back to Cart</a>
+            <div class="form-card">
+                <div class="header-row"><h3>Billing Details</h3></div>
+                <div class="form-body">
+                    <div class="form-group"><label>Full Name</label><input type="text" placeholder="Enter full name"></div>
+                    <div class="form-group"><label>Mobile Number</label><input type="tel" placeholder="Enter mobile number"></div>
+                    <div class="form-group full"><label>Address</label><textarea rows="3" placeholder="House/Shop No., Street, Village/Town"></textarea></div>
+                    <div class="form-group"><label>Town/City</label><input type="text" placeholder="Nerchowk/Mandi"></div>
+                    <div class="form-group"><label>PIN Code</label><input type="text" placeholder="175XXX"></div>
+                    <div class="form-group full"><label>Payment Method</label>
+                        <div style="display:flex;gap:1rem;flex-wrap:wrap">
+                            <label><input type="radio" name="pay" checked> Cash on Delivery</label>
+                            <label><input type="radio" name="pay"> UPI</label>
+                            <label><input type="radio" name="pay"> Net Banking</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <aside class="summary">
+            <div class="header-row"><h3>Order Summary</h3></div>
+            <div class="summary-body">
+                <div class="row"><span>Ultratech OPC 43 Grade Cement</span><span>&#8377; 390</span></div>
+                <div class="row"><span>Subtotal</span><span>&#8377; 390</span></div>
+                <div class="row"><span>Shipping</span><span>Free</span></div>
+                <div class="row total"><span>Total Amount</span><span>&#8377; 390</span></div>
+                <a class="btn" href="sharma_order_success.html"><i class="fas fa-check-circle"></i> Place Order</a>
+            </div>
+        </aside>
+    </main>
+</body>
+</html>

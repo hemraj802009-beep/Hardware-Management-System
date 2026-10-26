@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharma Hardware - Nerchowk, Mandi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+        header { background: linear-gradient(rgba(20,70,40,0.9), rgba(10,40,20,0.95)), url('images/hardware_bg_1.jpg'); background-size: cover; color: white; }
+        .top-bar { background: #0a1f11; padding: 0.4rem 2rem; font-size: 0.875rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .top-bar a { color: white; text-decoration: none; margin-left: 1rem; }
+        .nav-bar { padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .logo { font-size: 1.4rem; font-weight: 700; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
+        .search-bar { padding: 0.5rem 2rem; background: rgba(0,0,0,0.2); }
+        .search-box { max-width: 600px; margin: 0 auto; display: flex; }
+        .search-box input { flex: 1; padding: 0.6rem; border: none; border-radius: 4px 0 0 4px; }
+        .search-box button { padding: 0.6rem 1rem; background: #2d7a4d; color: white; border: none; border-radius: 0 4px 4px 0; cursor: pointer; }
+        .hero { text-align: center; padding: 3rem 2rem; }
+        .hero h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .hero p { font-size: 1.1rem; margin-bottom: 1.5rem; opacity: 0.95; }
+        .btn { background: #2d7a4d; color: white; padding: 0.7rem 1.8rem; text-decoration: none; border-radius: 4px; display: inline-block; }
+        .btn:hover { background: #25643e; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .section-title { font-size: 1.6rem; margin-bottom: 1rem; color: #1a4d2e; text-align: center; }
+        .categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .category-card { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.2rem; text-align: center; text-decoration: none; color: #333; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .category-card i { font-size: 2rem; color: #2d7a4d; margin-bottom: 0.5rem; display: block; }
+        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+        .product-card { background: white; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .product-img { height: 160px; background: linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.05)), url('images/hardware_bg_2.jpg'); background-size: cover; background-position: center; }
+        .product-info { padding: 0.9rem; }
+        .product-name { font-weight: 600; margin-bottom: 0.3rem; }
+        .product-price { color: #2d7a4d; font-weight: 700; margin-bottom: 0.6rem; }
+        .add-btn { width: 100%; background: #1a4d2e; color: white; border: none; padding: 0.55rem; border-radius: 4px; cursor: pointer; }
+        .add-btn:hover { background: #25643e; }
+        footer { background: #0f2f1a; color: white; margin-top: 2rem; }
+        .footer-top { padding: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.5rem; }
+        .footer-bottom { background: #0a1f11; text-align: center; padding: 0.8rem; font-size: 0.875rem; }
+        .footer-col h4 { margin-bottom: 0.8rem; }
+        .footer-col a { color: white; text-decoration: none; display: block; margin-bottom: 0.4rem; opacity: 0.9; }
+        @media(max-width:700px){ .nav-links{display:none;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <div>📞 Contact: Sharma Hardware, Nerchowk, Mandi, HP | Mon-Sat: 9AM-7PM</div>
+            <div>
+                <a href="#"><i class="fas fa-user"></i> Login</a>
+                <a href="#"><i class="fas fa-heart"></i> Wishlist</a>
+                <a href="#"><i class="fas fa-shopping-cart"></i> Cart (0)</a>
+            </div>
+        </div>
+        <div class="nav-bar">
+            <div class="logo"><i class="fas fa-tools"></i> Sharma Hardware</div>
+            <nav class="nav-links">
+                <a href="sharma_hardware.html"><i class="fas fa-home"></i> Home</a>
+                <a href="#shop"><i class="fas fa-store"></i> Shop</a>
+                <a href="#categories"><i class="fas fa-th-list"></i> Categories</a>
+                <a href="sharma_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="#contact"><i class="fas fa-phone"></i> Contact</a>
+            </nav>
+        </div>
+        <div class="search-bar">
+            <div class="search-box">
+                <input type="text" placeholder="Search products like cement, pipes, tools, hardware...">
+                <button><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+        <div class="hero">
+            <h1>Sharma Hardware Store</h1>
+            <p>Quality Hardware &amp; Building Materials at Best Prices - Nerchowk, Mandi</p>
+            <a href="#shop" class="btn"><i class="fas fa-shopping-bag"></i> Shop Now</a>
+        </div>
+    </header>
+    <main class="container">
+        <h2 class="section-title" id="categories">Shop by Categories</h2>
+        <div class="categories">
+            <a href="#" class="category-card"><i class="fas fa-cube"></i><div>Cement &amp; Steel</div></a>
+            <a href="#" class="category-card"><i class="fas fa-wrench"></i><div>Tools</div></a>
+            <a href="#" class="category-card"><i class="fas fa-tint"></i><div>Pipes &amp; Fittings</div></a>
+            <a href="#" class="category-card"><i class="fas fa-bolt"></i><div>Hardware</div></a>
+            <a href="#" class="category-card"><i class="fas fa-plug"></i><div>Electrical</div></a>
+            <a href="#" class="category-card"><i class="fas fa-paint-roller"></i><div>Paints</div></a>
+            <a href="#" class="category-card"><i class="fas fa-shower"></i><div>Sanitary</div></a>
+            <a href="#" class="category-card"><i class="fas fa-hammer"></i><div>Fasteners</div></a>
+        </div>
+        <h2 class="section-title" id="shop">Recommended Products</h2>
+        <div class="products">
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <div class="product-name">OPC 43 Grade Cement</div>
+                    <div class="product-price">&#8377; 380 / Bag</div>
+                    <button class="add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <div class="product-name">MS TMT Bar 8mm</div>
+                    <div class="product-price">&#8377; 72 / Kg</div>
+                    <button class="add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <div class="product-name">PVC Pipe 1.5" (6m)</div>
+                    <div class="product-price">&#8377; 450</div>
+                    <button class="add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <div class="product-name">Hand Drill Machine</div>
+                    <div class="product-price">&#8377; 1,250</div>
+                    <button class="add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <div class="product-name">Screw Set (Mixed)</div>
+                    <div class="product-price">&#8377; 150</div>
+                    <button class="add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <div class="product-name">Asian Paints Distemper</div>
+                    <div class="product-price">&#8377; 950</div>
+                    <button class="add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <div class="product-name">CPVC Elbow Set</div>
+                    <div class="product-price">&#8377; 85</div>
+                    <button class="add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"></div>
+                <div class="product-info">
+                    <div class="product-name">PVC Conduit Pipe</div>
+                    <div class="product-price">&#8377; 65/m</div>
+                    <button class="add-btn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-top">
+            <div class="footer-col">
+                <h4>Sharma Hardware</h4>
+                <p>Nerchowk, Mandi, Himachal Pradesh</p>
+                <p>Mon-Sat: 9:00 AM - 7:00 PM</p>
+                <p>Sunday: 9:00 AM - 1:00 PM</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a href="sharma_hardware_ecom.html"><i class="fas fa-chevron-right"></i> Home</a>
+                <a href="#shop"><i class="fas fa-chevron-right"></i> Shop</a>
+                <a href="#categories"><i class="fas fa-chevron-right"></i> Categories</a>
+                <a href="sharma_dashboard.html"><i class="fas fa-chevron-right"></i> Dashboard</a>
+            </div>
+            <div class="footer-col">
+                <h4>Categories</h4>
+                <a href="#"><i class="fas fa-chevron-right"></i> Cement &amp; Steel</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> Tools</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> Pipes &amp; Fittings</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> Electrical</a>
+            </div>
+            <div class="footer-col">
+                <h4>My Account</h4>
+                <a href="#"><i class="fas fa-chevron-right"></i> Login</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> Register</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> Cart</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> Wishlist</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Sharma Hardware, Nerchowk, Mandi. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

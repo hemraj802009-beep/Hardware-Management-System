@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sohan Lal Jiwan Lal Hardware Store - Mandi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        header {
+            background: linear-gradient(rgba(26, 77, 46, 0.9), rgba(15, 47, 26, 0.95)), url('images/hardware_bg_1.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        header p {
+            opacity: 0.95;
+            margin-top: 0.25rem;
+            font-size: 0.95rem;
+        }
+        nav {
+            background: #0f2f1a;
+            padding: 0.75rem 0;
+        }
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.25rem 0;
+            transition: opacity 0.2s;
+        }
+        nav a:hover {
+            opacity: 0.8;
+        }
+        main {
+            padding: 2rem 0;
+        }
+        .hero {
+            background: linear-gradient(rgba(248, 249, 250, 0.92), rgba(248, 249, 250, 0.92)), url('images/hardware_bg_2.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            padding: 2.5rem 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #1a4d2e;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .hero h2 {
+            color: #1a4d2e;
+            margin-bottom: 0.75rem;
+            font-size: 1.8rem;
+        }
+        .hero p {
+            font-size: 1.05rem;
+            color: #1a1a1a;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .card h3 {
+            color: #1a4d2e;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 0.5rem;
+        }
+        .info-item {
+            margin-bottom: 0.75rem;
+        }
+        .info-item strong {
+            color: #2c5a3d;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        .products {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .products h3 {
+            color: #1a4d2e;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        .product-item {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        footer {
+            background: linear-gradient(rgba(15, 47, 26, 0.95), rgba(10, 31, 17, 0.98)), url('images/hardware_bg_1.jpg');
+            background-size: cover;
+            background-position: bottom;
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        footer p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 640px) {
+            nav ul {
+                gap: 1rem;
+            }
+            .container {
+                padding: 0 1rem;
+            }
+            .hero, .card, .products {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Sohan Lal Jiwan Lal Hardware Store</h1>
+            <p>Building Materials &amp; Hardware Suppliers - Mandi, Himachal Pradesh</p>
+        </div>
+    </header>
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#location">Location</a></li>
+                <li><a href="sohanlal_dashboard.html">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main>
+        <div class="container">
+            <section id="home" class="hero">
+                <h2>Quality Hardware for Every Project</h2>
+                <p>Trusted supplier of building materials, tools &amp; hardware in Mandi since decades. Your one-stop shop for construction needs.</p>
+            </section>
+            <div class="grid">
+                <section id="about" class="card">
+                    <h3>About Us</h3>
+                    <p>Serving the Mandi region with reliable hardware solutions. We stock a wide range of building materials, tools, pipes, fittings, and essential hardware items for contractors, builders, and homeowners.</p>
+                </section>
+                <section id="contact" class="card">
+                    <h3>Contact Information</h3>
+                    <div class="info-item">
+                        <strong>Business Name:</strong> Sohan Lal Jiwan Lal Hardware Store
+                    </div>
+                    <div class="info-item">
+                        <strong>Location:</strong> Mandi, Himachal Pradesh
+                    </div>
+                    <div class="info-item">
+                        <strong>Address:</strong> Mandi Main Market / Gaushala Bazar Area, Mandi, HP
+                    </div>
+                    <div class="info-item">
+                        <strong>Working Hours:</strong> Monday - Saturday: 9:00 AM - 7:00 PM<br>Sunday: Closed
+                    </div>
+                </section>
+                <section id="location" class="card">
+                    <h3>Location</h3>
+                    <p>Mandi is a major commercial hub in Himachal Pradesh. Our store is conveniently located to serve customers across Mandi town and surrounding areas.</p>
+                    <p style="margin-top: 0.75rem;"><strong>Service Area:</strong> Mandi, Sundernagar, Joginder Nagar, Pandoh and nearby regions</p>
+                </section>
+            </div>
+            <section id="products" class="products">
+                <h3>Products &amp; Services</h3>
+                <div class="product-grid">
+                    <div class="product-item">Building Materials</div>
+                    <div class="product-item">Cement &amp; Steel</div>
+                    <div class="product-item">PVC Pipes &amp; Fittings</div>
+                    <div class="product-item">Sanitary Ware</div>
+                    <div class="product-item">Electrical Goods</div>
+                    <div class="product-item">Tools &amp; Hardware</div>
+                    <div class="product-item">Paints &amp; Brushes</div>
+                    <div class="product-item">Nails, Bolts &amp; Screws</div>
+                    <div class="product-item">Water Tanks</div>
+                    <div class="product-item">Iron &amp; Steel Items</div>
+                    <div class="product-item">Door &amp; Window Fittings</div>
+                    <div class="product-item">General Hardware</div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Sohan Lal Jiwan Lal Hardware Store. All rights reserved.</p>
+            <p style="margin-top: 0.25rem; font-size: 0.85rem;">Mandi, Himachal Pradesh</p>
+        </div>
+    </footer>
+</body>
+</html>

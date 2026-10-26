@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharma Hardware Store - New Chowk, Mandi |  Hardware &amp; Building Materials</title>
+    <meta name="description" content="Sharma Hardware Store, New Chowk, Mandi (HP) -  quality cement, steel, plumbing, electrical, tools, paints &amp; sanitary ware.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root{--bg:#0b1026;--text:#0f172a;--surface:#ffffff;--primary:#0f7b3e;--accent:#f59e0b;--muted:#475569}
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:Jost,-apple-system,BlinkMacSystemFont,sans-serif;color:var(--text);line-height:1.8;background:#f8fafc}
+        header{position:fixed;inset:0 0 auto 0;z-index:20;background:rgba(11,16,38,0.9);backdrop-filter:blur(12px);color:white}
+        .topbar{display:flex;justify-content:space-between;align-items:center;padding:0.4rem 3rem;font-size:0.9rem;border-bottom:1px solid rgba(255,255,255,0.12)}
+        .topbar-info{display:flex;gap:1.6rem;flex-wrap:wrap}
+        .topbar-links{display:flex;gap:1rem}
+        .navbar{display:flex;align-items:center;justify-content:space-between;gap:1.6rem;padding:0.8rem 3rem}
+        .brand{display:flex;align-items:center;gap:0.8rem;text-decoration:none;color:white}
+        .brand-mark{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#22c55e);display:flex;align-items:center;justify-content:center;font-weight:800}
+        .brand-text strong{display:block;font-family:Syne;font-size:1.1rem;letter-spacing:0.02em}
+        .brand-text small{display:block;font-size:0.85rem;opacity:0.8}
+        .nav-menu{display:flex;gap:1.8rem;list-style:none;flex-wrap:wrap}
+        .nav-menu a{color:white;text-decoration:none;font-weight:500;position:relative}
+        .nav-menu a:after{content:'';position:absolute;left:0;bottom:-0.4rem;width:0;height:2px;background:var(--accent);transition:width .2s}
+        .nav-menu a:hover:after{width:100%}
+        .header-cta{display:flex;gap:0.8rem;align-items:center}
+        .btn{display:inline-flex;align-items:center;gap:0.5rem;border-radius:999px;padding:0.7rem 1.8rem;text-decoration:none;font-weight:600}
+        .btn-light{border:1px solid rgba(255,255,255,0.9);color:white}
+        .btn-solid{background:var(--accent);color:#1f2937}
+        .hero{position:relative;min-height:100svh;display:flex;align-items:center;background:radial-gradient(circle at top right,rgba(34,197,94,0.18),transparent 55%),radial-gradient(circle at bottom left,rgba(245,158,11,0.16),transparent 50%),linear-gradient(160deg,#0b1026 0%,#0f1f33 100%);color:white;padding:0 3rem}
+        .hero-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2rem;align-items:center;max-width:1400px;margin:0 auto}
+        .hero-content{grid-column:1/8}
+        .hero-media{grid-column:8/13;position:relative}
+        .eyebrow{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,0.4);font-size:0.9rem;margin-bottom:1.6rem}
+        .hero-title{font-family:Syne;font-size:clamp(2.6rem,6vw,5rem);line-height:1.08;margin-bottom:1rem}
+        .hero-subtitle{max-width:640px;margin-bottom:2rem;font-size:1.08rem;opacity:0.92}
+        .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.4rem}
+        .hero-stats{display:flex;gap:2.4rem;flex-wrap:wrap}
+        .stat-item strong{display:block;font-family:Syne;font-size:1.8rem}
+        .stat-item span{opacity:0.8}
+        .hero-card{background:rgba(255,255,255,0.08);backdrop-filter:blur(18px);border-radius:20px;border:1px solid rgba(255,255,255,0.18);padding:2rem;box-shadow:0 60px 120px rgba(15,23,42,0.45)}
+        .hero-card h3{font-family:Syne;margin-bottom:0.8rem}
+        .card-list{display:grid;gap:0.8rem}
+        .card-item{display:flex;justify-content:space-between;align-items:center;padding:0.8rem 0;border-bottom:1px solid rgba(255,255,255,0.14)}
+        .section{padding:5rem 3rem}
+        .section-alt{background:white}
+        .container{max-width:1400px;margin:0 auto}
+        .section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.4rem;gap:1.6rem}
+        .section-title{font-family:Syne;font-size:clamp(1.8rem,4vw,3rem);color:var(--text)}
+        .section-lead{opacity:0.7;margin-top:0.6rem}
+        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.6rem}
+        .feature-card{background:white;border-radius:18px;padding:2rem;box-shadow:0 30px 60px rgba(15,23,42,0.08);display:flex;flex-direction:column;gap:1rem}
+        .feature-icon{width:56px;height:56px;border-radius:16px;background:rgba(15,123,62,0.12);display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:1.4rem}
+        .feature-card h3{font-family:Syne}
+        .categories-showcase{display:grid;grid-template-columns:repeat(12,1fr);gap:1.6rem}
+        .category-large{grid-column:1/7;background:radial-gradient(circle,rgba(15,123,62,0.22),transparent),url('images/hardware_bg_1.jpg');background-size:cover;border-radius:22px;min-height:380px;display:flex;align-items:flex-end;padding:2.4rem;color:white}
+        .category-stack{grid-column:7/13;display:grid;gap:1.6rem}
+        .category-card{background:white;border-radius:22px;box-shadow:0 30px 60px rgba(15,23,42,0.08);overflow:hidden;display:grid;grid-template-columns:1fr 1.2fr;align-items:center;min-height:180px}
+        .category-media{height:100%;background:url('images/hardware_bg_2.jpg');background-size:cover}
+        .category-content{padding:2rem}
+        .products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.6rem}
+        .product-card{background:white;border-radius:20px;box-shadow:0 30px 60px rgba(15,23,42,0.07);overflow:hidden;display:flex;flex-direction:column}
+        .product-media{position:relative;height:220px;background-size:cover;background-position:center}
+        .product-tag{position:absolute;left:1.2rem;top:1.2rem;background:var(--accent);color:#1f2937;padding:0.4rem 0.9rem;border-radius:999px;font-weight:600;font-size:0.9rem}
+        .product-body{padding:1.6rem;display:flex;flex-direction:column;gap:0.8rem}
+        .product-name{font-family:Syne;font-size:1.1rem}
+        .product-price{font-family:Syne;font-size:1.2rem;color:var(--primary)}
+        .product-actions{display:flex;gap:0.8rem;margin-top:0.6rem}
+        .btn-ghost{border:1px solid rgba(15,123,62,0.4);color:var(--primary);border-radius:999px;padding:0.7rem 1.4rem;text-decoration:none;text-align:center;flex:1}
+        .btn-fill{background:var(--primary);color:white;border-radius:999px;padding:0.7rem 1.4rem;text-decoration:none;text-align:center;flex:1}
+        footer{background:#050816;color:white;margin-top:4rem}
+        .footer-main{max-width:1400px;margin:0 auto;padding:4rem 3rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem}
+        .footer-brand p{margin:1rem 0;opacity:0.85}
+        .footer-links h4{font-family:Syne;margin-bottom:1rem}
+        .footer-links a{color:white;text-decoration:none;display:block;margin-bottom:0.7rem;opacity:0.9}
+        .footer-bottom{border-top:1px solid rgba(255,255,255,0.14);text-align:center;padding:1rem 3rem;opacity:0.8}
+        @media(max-width:1200px){.hero-content{grid-column:1/-1}.hero-media{grid-column:1/-1}.categories-showcase .category-large{grid-column:1/-1}.category-stack{grid-column:1/-1}}
+        @media(max-width:920px){.nav-menu{display:none}.topbar{display:none}}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="topbar">
+            <div class="topbar-info">
+                <span><i class="fas fa-map-marker-alt"></i> New Chowk, Mandi, Himachal Pradesh</span>
+                <span><i class="fas fa-phone"></i> +91 XXX XXX XXXX</span>
+                <span><i class="fas fa-envelope"></i> sales@sharmahardware.in</span>
+                <span><i class="fas fa-clock"></i> Mon–Sat: 9:00 AM – 7:00 PM | Sun: 9:00 AM – 1:00 PM</span>
+            </div>
+            <div class="topbar-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a class="brand" href="#home">
+                <div class="brand-mark">SH</div>
+                <div class="brand-text">
+                    <strong>Sharma Hardware Store</strong>
+                    <small>New Chowk, Mandi (HP)</small>
+                </div>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="sharma_pro.html">Products Catalog</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#products">Featured</a></li>
+                <li><a href="sharmahardware.html">Store &amp; Map</a></li>
+                <li><a href="sharma_dashboard.html">Dashboard</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="header-cta">
+                <a class="btn btn-light" href="sharma_cart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
+                <a class="btn btn-solid" href="sharma_pro.html"><i class="fas fa-store"></i> Shop Now</a>
+            </div>
+        </nav>
+    </header>
+    <main id="home">
+        <section class="hero">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="eyebrow"><i class="fas fa-award"></i> Trusted Since Generations</div>
+                    <h1 class="hero-title">Sharma Hardware &amp; Building Materials</h1>
+                    <p class="hero-subtitle">Sharma Hardware Store, New Chowk, Mandi delivers genuine cement, TMT steel, plumbing, electrical, power tools, paints, sanitaryware &amp; construction essentials at the most competitive rates.</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-solid" href="sharma_pro.html"><i class="fas fa-bag-shopping"></i> Explore Products</a>
+                        <a class="btn btn-light" href="#contact"><i class="fas fa-phone"></i> Get Quote</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item"><strong>5000+</strong><span>Products Available</span></div>
+                        <div class="stat-item"><strong>25+</strong><span>Years of Excellence</span></div>
+                        <div class="stat-item"><strong>10000+</strong><span>Satisfied Customers</span></div>
+                        <div class="stat-item"><strong>Bulk</strong><span>Orders Welcome</span></div>
+                    </div>
+                </div>
+                <div class="hero-media">
+                    <div class="hero-card">
+                        <h3>Quick Product Range</h3>
+                        <div class="card-list">
+                            <div class="card-item"><span><a href="cement_steel.html" style="color:white;text-decoration:none">Cement, TMT &amp; Structural Steel</a></span><i class="fas fa-chevron-right"></i></div>
+                            <div class="card-item"><span><a href="plumbing.html" style="color:white;text-decoration:none">Pipes, Fittings &amp; Plumbing</a></span><i class="fas fa-chevron-right"></i></div>
+                            <div class="card-item"><span><a href="tools.html" style="color:white;text-decoration:none">Power Tools &amp; Hand Tools</a></span><i class="fas fa-chevron-right"></i></div>
+                            <div class="card-item"><span><a href="electrical.html" style="color:white;text-decoration:none">Electrical, Switches &amp; Wires</a></span><i class="fas fa-chevron-right"></i></div>
+                            <div class="card-item"><span><a href="paints.html" style="color:white;text-decoration:none">Paints, Putty &amp; Waterproofing</a></span><i class="fas fa-chevron-right"></i></div>
+                            <div class="card-item"><span><a href="sanitary.html" style="color:white;text-decoration:none">Sanitaryware &amp; Bath Fittings</a></span><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section section-alt" id="categories">
+            <div class="container">
+                <div class="section-head">
+                    <div>
+                        <h2 class="section-title">Shop by Category</h2>
+                        <p class="section-lead">Curated sections for contractors, engineers, masons &amp; homeowners</p>
+                    </div>
+                    <a class="btn btn-ghost" href="sharma_pro.html">View All Categories</a>
+                </div>
+                <div class="categories-showcase">
+                    <div class="category-large">
+                        <div>
+                            <h3 style="font-family:Syne;font-size:2rem;margin-bottom:0.6rem">Building Materials Hub</h3>
+                            <p>Cement, steel, bricks, aggregates &amp; structural essentials under one roof</p>
+                        </div>
+                    </div>
+                    <div class="category-stack">
+                        <article class="category-card">
+                            <div class="category-media"></div>
+                            <div class="category-content">
+                                <div>
+                                    <h3 style="font-family:Syne;margin-bottom:0.4rem">Plumbing &amp; Sanitary</h3>
+                                    <p style="opacity:0.7">Pipes, valves, faucets, CP fittings &amp; bathroom solutions</p>
+                                </div>
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </article>
+                        <article class="category-card">
+                            <div class="category-media"></div>
+                            <div class="category-content">
+                                <div>
+                                    <h3 style="font-family:Syne;margin-bottom:0.4rem">Tools &amp; Electrical</h3>
+                                    <p style="opacity:0.7">Power tools, hand tools, wires, MCBs &amp; lighting</p>
+                                </div>
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section" id="products">
+            <div class="container">
+                <div class="section-head">
+                    <div>
+                        <h2 class="section-title">Featured Picks</h2>
+                        <p class="section-lead">Top selling products trusted by professionals across Mandi</p>
+                    </div>
+                    <a class="btn btn-solid" href="sharma_pro.html"><i class="fas fa-grid"></i> View All Products</a>
+                </div>
+                <div class="products-grid">
+                    <article class="product-card">
+                        <div class="product-media" style="background-image:url('images/prod_1.jpg')"><span class="product-tag">Best Seller</span></div>
+                        <div class="product-body">
+                            <div style="display:flex;justify-content:space-between;opacity:0.7"><span>Cement</span><span>50kg Bag</span></div>
+                            <h3 class="product-name">Ultratech OPC 43 Grade Cement</h3>
+                            <div class="product-price">&#8377; 390</div>
+                            <div class="product-actions">
+                                <a class="btn-ghost" href="sharma_product_detail.html"><i class="fas fa-eye"></i> Details</a>
+                                <a class="btn-fill" href="sharma_cart.html"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-media" style="background-image:url('images/prod_2.jpg')"></div>
+                        <div class="product-body">
+                            <div style="display:flex;justify-content:space-between;opacity:0.7"><span>TMT Steel</span><span>Per Kg</span></div>
+                            <h3 class="product-name">Fe 500D TMT Bars</h3>
+                            <div class="product-price">&#8377; 74 – &#8377; 82</div>
+                            <div class="product-actions">
+                                <a class="btn-ghost" href="sharma_product_detail.html">Details</a>
+                                <a class="btn-fill" href="sharma_cart.html">Add to Cart</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-media" style="background-image:url('images/prod_3.jpg')"><span class="product-tag">New</span></div>
+                        <div class="product-body">
+                            <div style="display:flex;justify-content:space-between;opacity:0.7"><span>Power Tools</span><span>Piece</span></div>
+                            <h3 class="product-name">Professional Angle Grinder</h3>
+                            <div class="product-price">&#8377; 1,899</div>
+                            <div class="product-actions">
+                                <a class="btn-ghost" href="sharma_product_detail.html">Details</a>
+                                <a class="btn-fill" href="sharma_cart.html">Add to Cart</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-media" style="background-image:url('images/prod_4.jpg')"></div>
+                        <div class="product-body">
+                            <div style="display:flex;justify-content:space-between;opacity:0.7"><span>Plumbing</span><span>6m</span></div>
+                            <h3 class="product-name">UPVC Plumbing Pipes</h3>
+                            <div class="product-price">&#8377; 420 – &#8377; 2,850</div>
+                            <div class="product-actions">
+                                <a class="btn-ghost" href="sharma_product_detail.html">Details</a>
+                                <a class="btn-fill" href="sharma_cart.html">Add to Cart</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer id="contact">
+        <div class="footer-main">
+            <div class="footer-brand">
+                <div class="brand" style="color:white">
+                    <div class="brand-mark">SH</div>
+                    <div class="brand-text"><strong>Sharma Hardware Store</strong><small>New Chowk, Mandi (HP)</small></div>
+                </div>
+                <p>Premier hardware &amp; building materials supplier serving New Chowk, Mandi and surrounding areas with genuine products, bulk pricing &amp; professional guidance.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Contact Info</h4>
+                <a href="#"><i class="fas fa-map-marker-alt"></i> New Chowk, Mandi, Himachal Pradesh - 175001</a>
+                <a href="tel:+919736620896"><i class="fas fa-phone"></i> +91 97366 20896</a>
+                <a href="mailto:sales@sharmahardware.in"><i class="fas fa-envelope"></i> sales@sharmahardware.in</a>
+                <a href="#"><i class="fas fa-clock"></i> Mon–Sat: 9:00 AM – 7:00 PM | Sun: 9:00 AM – 1:00 PM</a>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="#home">Home</a>
+                <a href="#categories">Categories</a>
+                <a href="sharma_pro.html">Shop Catalog</a>
+                <a href="sharmahardware.html">Store Location &amp; Map</a>
+                <a href="sharma_dashboard.html">Inventory Dashboard</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+            <div class="footer-links">
+                <h4>Product Range</h4>
+                <a href="#">Cement &amp; Steel</a>
+                <a href="#">Plumbing &amp; Sanitary</a>
+                <a href="#">Tools &amp; Electrical</a>
+                <a href="#">Paints &amp; Waterproofing</a>
+                <a href="#">Hardware &amp; Fasteners</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Sharma Hardware Store, New Chowk, Mandi (HP). All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

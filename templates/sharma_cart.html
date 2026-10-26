@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Sharma Hardware</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:Inter,sans-serif;background:#f8fafc;color:#1e293b}
+        header{background:#1b4d2e;color:white;padding:0.9rem 2rem}
+        .logo{color:white;text-decoration:none;font-weight:700}
+        .container{max-width:1100px;margin:0 auto;padding:2rem}
+        .cart-grid{display:grid;grid-template-columns:2fr 1fr;gap:1.5rem}
+        .cart-items,.summary{background:white;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,0.06);overflow:hidden}
+        .header-row{padding:1rem 1.4rem;border-bottom:1px solid #eef2f7;display:flex;justify-content:space-between}
+        .item-row{display:flex;gap:1rem;padding:1rem 1.4rem;border-bottom:1px solid #eef2f7}
+        .item-img{width:90px;height:90px;background:url('images/hardware_bg_2.jpg');background-size:cover;border-radius:8px}
+        .item-info{flex:1}
+        .item-name{font-weight:600}
+        .item-meta{opacity:0.7;font-size:0.9rem}
+        .item-price{font-weight:700;color:#1b4d2e}
+        .qty{display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem}
+        .qty button{width:28px;height:28px;border:1px solid #d7e3dc;border-radius:4px;background:white;cursor:pointer}
+        .summary-body{padding:1.4rem}
+        .row{display:flex;justify-content:space-between;margin-bottom:0.8rem}
+        .total{font-weight:700;font-size:1.1rem}
+        .btn{display:block;text-align:center;padding:0.9rem;border-radius:999px;text-decoration:none;font-weight:600}
+        .btn-primary{background:#1b4d2e;color:white}
+        .back{display:inline-block;margin:1rem 0;color:#1b4d2e;text-decoration:none}
+        @media(max-width:900px){.cart-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <header><a class="logo" href="sharma_pro.html"><i class="fas fa-tools"></i> Sharma Hardware</a></header>
+    <main class="container">
+        <a class="back" href="sharma_pro.html"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+        <div class="cart-grid">
+            <div class="cart-items">
+                <div class="header-row"><h3>Shopping Cart (1 Item)</h3></div>
+                <div class="item-row">
+                    <div class="item-img"></div>
+                    <div class="item-info">
+                        <div class="item-name">Ultratech OPC 43 Grade Cement</div>
+                        <div class="item-meta">Cement &amp; Steel | Bag</div>
+                        <div class="qty">
+                            <button>-</button>
+                            <span>1</span>
+                            <button>+</button>
+                            <a href="#" style="margin-left:1rem;color:#dc2626;text-decoration:none">Remove</a>
+                        </div>
+                    </div>
+                    <div class="item-price">&#8377; 390</div>
+                </div>
+            </div>
+            <aside class="summary">
+                <div class="header-row"><h3>Order Summary</h3></div>
+                <div class="summary-body">
+                    <div class="row"><span>Subtotal</span><span>&#8377; 390</span></div>
+                    <div class="row"><span>Delivery Charges</span><span>Free</span></div>
+                    <div class="row total"><span>Total</span><span>&#8377; 390</span></div>
+                    <a class="btn btn-primary" href="sharma_checkout.html"><i class="fas fa-lock"></i> Proceed to Checkout</a>
+                </div>
+            </aside>
+        </div>
+    </main>
+</body>
+</html>

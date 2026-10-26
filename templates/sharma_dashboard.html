@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharma Hardware - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; background: linear-gradient(rgba(245,247,250,0.92), rgba(245,247,250,0.92)), url('images/hardware_bg_2.jpg'); background-attachment: fixed; background-size: cover; background-position: center; color: #333; }
+        .sidebar { width: 260px; height: 100vh; position: fixed; left: 0; top: 0; background: linear-gradient(180deg,#1a4d2e 0%,#0f2f1a 100%); color: white; overflow-y: auto; }
+        .sidebar-header { padding: 1.25rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header h2 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+        .sidebar-header p { font-size: 0.75rem; opacity: 0.8; }
+        .sidebar-menu { padding: 0.75rem 0; }
+        .menu-section { margin-bottom: 1rem; }
+        .menu-section-title { padding: 0 1rem 0.4rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; }
+        .menu-item { display: flex; align-items: center; padding: 0.7rem 1rem; color: white; text-decoration: none; gap: 0.75rem; font-size: 0.9rem; }
+        .menu-item:hover { background: rgba(255,255,255,0.1); }
+        .menu-item.active { background: rgba(255,255,255,0.2); border-left: 3px solid #4ade80; }
+        .main-content { margin-left: 260px; padding: 1.25rem; }
+        .topbar { background: white; padding: 1rem 1.25rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .topbar h1 { font-size: 1.4rem; color: #1a4d2e; }
+        .btn { padding: 0.5rem 0.9rem; background: #1a4d2e; color: white; text-decoration: none; border-radius: 4px; font-size: 0.875rem; display: inline-flex; gap: 0.4rem; align-items: center; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+        .stat-card { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 0.75rem; }
+        .stat-icon { width: 45px; height: 45px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .stat-icon.blue { background: #e0f2fe; color: #0284c7; }
+        .stat-icon.green { background: #dcfce7; color: #16a34a; }
+        .stat-icon.orange { background: #fed7aa; color: #ea580c; }
+        .stat-icon.purple { background: #e9d5ff; color: #9333ea; }
+        .stat-info h3 { font-size: 0.8rem; color: #666; margin-bottom: 0.2rem; }
+        .stat-info p { font-size: 1.3rem; font-weight: 600; color: #1a4d2e; }
+        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 0.75rem; }
+        .table-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+        .card-header { padding: 0.75rem 1rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+        .card-header h2 { font-size: 1rem; color: #1a4d2e; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f9fafb; padding: 0.6rem 1rem; text-align: left; font-size: 0.75rem; text-transform: uppercase; color: #666; border-bottom: 1px solid #e5e7eb; }
+        td { padding: 0.6rem 1rem; border-bottom: 1px solid #e5e7eb; font-size: 0.875rem; }
+        .status { padding: 0.2rem 0.45rem; border-radius: 4px; font-size: 0.72rem; }
+        .status.success { background: #dcfce7; color: #16a34a; }
+        .status.pending { background: #fef3c7; color: #d97706; }
+        .status.danger { background: #fee2e2; color: #dc2626; }
+        @media(max-width:900px){ .content-grid{grid-template-columns:1fr;} .sidebar{width:100%;height:auto;position:relative;} .main-content{margin-left:0;} }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Sharma Hardware</h2>
+            <p>Nerchowk, Mandi, HP</p>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <div class="menu-section-title">Main</div>
+                <a href="#" class="menu-item active"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-shopping-cart"></i><span>Purchase Order</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-wrench"></i><span>Tool Stock Details</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-truck"></i><span>Suppliers</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-users"></i><span>Customers</span></a>
+            </div>
+            <div class="menu-section">
+                <div class="menu-section-title">Inventory</div>
+                <a href="#" class="menu-item"><i class="fas fa-boxes"></i><span>Stock Management</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-warehouse"></i><span>Godown Details</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-bell"></i><span>Low Stock Alerts</span></a>
+            </div>
+            <div class="menu-section">
+                <div class="menu-section-title">Sales</div>
+                <a href="#" class="menu-item"><i class="fas fa-cash-register"></i><span>POS/Billing</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-file-invoice"></i><span>Sales Invoice</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-chart-line"></i><span>Sales Reports</span></a>
+            </div>
+            <div class="menu-section">
+                <div class="menu-section-title">Finance</div>
+                <a href="#" class="menu-item"><i class="fas fa-receipt"></i><span>Expenses</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-money-bill-wave"></i><span>Payments</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-calculator"></i><span>GST Reports</span></a>
+            </div>
+            <div class="menu-section">
+                <div class="menu-section-title">Others</div>
+                <a href="sharma_hardware.html" class="menu-item"><i class="fas fa-home"></i><span>Store Website</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-user-cog"></i><span>Staff Management</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+            </div>
+        </nav>
+    </aside>
+    <main class="main-content">
+        <div class="topbar">
+            <h1>Sharma Hardware Dashboard</h1>
+            <a href="#" class="btn"><i class="fas fa-plus"></i> New PO</a>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-box"></i></div>
+                <div class="stat-info"><h3>Total Products</h3><p>1,850</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-rupee-sign"></i></div>
+                <div class="stat-info"><h3>Today's Sales</h3><p>&#8377; 28,450</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="fas fa-shopping-cart"></i></div>
+                <div class="stat-info"><h3>Purchase Orders</h3><p>12</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-info"><h3>Low Stock</h3><p>8</p></div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="table-card">
+                <div class="card-header"><h2>Recent Purchase Orders</h2><a href="#" class="btn"><i class="fas fa-eye"></i> View All</a></div>
+                <table>
+                    <thead><tr><th>PO #</th><th>Supplier</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>SH-PO-045</td><td>Sharma Steel</td><td>19 Oct 2026</td><td>&#8377; 18,500</td><td><span class="status success">Delivered</span></td></tr>
+                        <tr><td>SH-PO-044</td><td>HP Pipes</td><td>18 Oct 2026</td><td>&#8377; 12,800</td><td><span class="status pending">Pending</span></td></tr>
+                        <tr><td>SH-PO-043</td><td>Tools Hub</td><td>17 Oct 2026</td><td>&#8377; 6,400</td><td><span class="status success">Delivered</span></td></tr>
+                        <tr><td>SH-PO-042</td><td>Paint Mart</td><td>16 Oct 2026</td><td>&#8377; 9,250</td><td><span class="status pending">Pending</span></td></tr>
+                        <tr><td>SH-PO-041</td><td>Cement Depot</td><td>15 Oct 2026</td><td>&#8377; 22,000</td><td><span class="status success">Delivered</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-card">
+                <div class="card-header"><h2>Tool Stock Details</h2><a href="#" class="btn"><i class="fas fa-wrench"></i> Manage</a></div>
+                <table>
+                    <thead><tr><th>Tool</th><th>Qty</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>Hammers</td><td>32</td><td><span class="status success">OK</span></td></tr>
+                        <tr><td>Spanners</td><td>24</td><td><span class="status success">OK</span></td></tr>
+                        <tr><td>Drill Bits</td><td>14</td><td><span class="status pending">Low</span></td></tr>
+                        <tr><td>Measuring Tapes</td><td>6</td><td><span class="status pending">Low</span></td></tr>
+                        <tr><td>Cutting Blades</td><td>4</td><td><span class="status danger">Critical</span></td></tr>
+                        <tr><td>Allen Keys</td><td>18</td><td><span class="status success">OK</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

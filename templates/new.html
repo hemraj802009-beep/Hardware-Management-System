@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sohan Lal Jiwan Lal Hardware</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: full-width rotating hero with live status, then icon dashboard (quick actions, stats, hours, categories), review slider, ticker footer */
+:root{
+  --bg:#f3f1ec; --surface:#ffffff; --fg:#1b2127; --muted:#5d6872; --line:#d9d6cd;
+  --accent:#d9480f; --accent-fg:#ffffff; --steel:#2f4858; --brass:#b8860b;
+  --good:#1f8a4c; --bad:#c0392b; --hero-fg:#ffffff;
+  --display:'Barlow Condensed','Arial Narrow',Impact,sans-serif;
+  --body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12171b; --surface:#1b2227; --fg:#eceae4; --muted:#9aa5ae; --line:#2e3840;
+  --accent:#ff7a3d; --accent-fg:#14100d; --steel:#7fa3b8; --brass:#e2b44a;
+  --good:#4cc686; --bad:#ff7b6b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12171b; --surface:#1b2227; --fg:#eceae4; --muted:#9aa5ae; --line:#2e3840;
+  --accent:#ff7a3d; --accent-fg:#14100d; --steel:#7fa3b8; --brass:#e2b44a;
+  --good:#4cc686; --bad:#ff7b6b; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+.wrap{max-width:1160px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1;margin:0;text-wrap:balance;letter-spacing:.01em}
+svg.i{width:1.6em;height:1.6em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* hero */
+.hero{position:relative;margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));min-height:560px;overflow:hidden;color:var(--hero-fg);background:#1d2a33}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;background-size:cover;background-position:center}
+.slide.on{opacity:1;animation:drift 12s ease-out forwards}
+@keyframes drift{from{transform:scale(1.02)}to{transform:scale(1.1)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,14,17,.88) 0%,rgba(10,14,17,.55) 55%,rgba(10,14,17,.25) 100%)}
+.hero-in{position:relative;z-index:2;padding:28px max(16px,env(safe-area-inset-left,0px)) 36px;min-height:560px;display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:700;font-size:1.25rem;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.brand b{display:grid;place-items:center;width:38px;height:38px;background:var(--accent);color:var(--accent-fg);font-size:1.15rem;border-radius:4px}
+.theme{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:99px;padding:7px 14px;font:500 .85rem var(--body);cursor:pointer;display:flex;gap:8px;align-items:center}
+.hero h1{font-size:clamp(2.6rem,8vw,5.6rem);font-weight:800;text-transform:uppercase;max-width:14ch}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p.lead{max-width:46ch;font-size:1.1rem;margin:16px 0 0;color:rgba(255,255,255,.88)}
+.status{display:inline-flex;align-items:center;gap:10px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25);padding:8px 14px;border-radius:99px;font-weight:500;font-size:.95rem;margin-bottom:18px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--good)}
+.dot.closed{background:var(--bad)}
+.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:4px;font-weight:600;text-decoration:none;border:2px solid var(--accent);background:var(--accent);color:var(--accent-fg);cursor:pointer;font-family:var(--body);font-size:1rem}
+.btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.7)}
+.dots{display:flex;gap:8px;align-items:center}
+.dots button{width:34px;height:6px;border:0;border-radius:3px;background:rgba(255,255,255,.35);cursor:pointer;padding:0}
+.dots button.on{background:var(--accent)}
+.cap{font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8);min-width:12ch}
+
+/* ticker */
+.ticker{background:var(--accent);color:var(--accent-fg);margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));overflow:hidden;white-space:nowrap;font-family:var(--display);font-weight:700;font-size:1.2rem;letter-spacing:.06em;text-transform:uppercase}
+.ticker div{display:inline-flex;gap:48px;padding:10px 0;animation:run 38s linear infinite;padding-left:48px}
+.ticker span{display:inline-flex;align-items:center;gap:12px}
+@keyframes run{to{transform:translateX(-50%)}}
+
+section{padding-block:44px 0}
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.sh h2{font-size:clamp(1.8rem,4vw,2.6rem);text-transform:uppercase}
+.sh span{color:var(--muted);font-size:.9rem}
+
+/* dashboard */
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.q{display:flex;flex-direction:column;gap:10px;align-items:flex-start;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:6px;text-decoration:none;min-width:0;transition:transform .15s,border-color .15s}
+.q:hover{transform:translateY(-3px);border-color:var(--accent)}
+.q .ic{width:46px;height:46px;border-radius:6px;display:grid;place-items:center;background:var(--steel);color:var(--bg)}
+.q:nth-child(odd) .ic{background:var(--accent);color:var(--accent-fg)}
+.q b{font-family:var(--display);font-size:1.35rem;text-transform:uppercase;letter-spacing:.03em}
+.q small{color:var(--muted);line-height:1.3}
+
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px;min-width:0}
+.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}
+@media(max-width:860px){.c4,.c5,.c6,.c7,.c8{grid-column:span 12}}
+.card h3{font-size:1.4rem;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:14px;color:var(--steel)}
+.stat{font-family:var(--display);font-weight:800;font-size:3.6rem;line-height:1;font-variant-numeric:tabular-nums}
+.stat small{font-size:1.2rem;color:var(--muted);font-weight:600}
+.stars{display:flex;gap:3px;color:var(--brass);margin:8px 0}
+.stars svg{width:20px;height:20px;fill:currentColor;stroke:none}
+.bars{display:grid;gap:6px;margin-top:12px;font-size:.82rem;color:var(--muted)}
+.bar{display:grid;grid-template-columns:14px 1fr;gap:8px;align-items:center}
+.bar i{display:block;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i u{display:block;height:100%;background:var(--brass)}
+.info{display:grid;gap:14px;margin:0;padding:0;list-style:none}
+.info li{display:flex;gap:14px;align-items:flex-start;min-width:0}
+.info svg{color:var(--accent);margin-top:2px}
+.info b{display:block;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.info span{overflow-wrap:anywhere}
+.copy{margin-left:8px;border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:4px;padding:2px 10px;font:500 .8rem var(--body);cursor:pointer}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+td{padding:9px 0;border-bottom:1px solid var(--line)}
+td:last-child{text-align:right}
+tr.today td{font-weight:600;color:var(--accent)}
+tr.off td:last-child{color:var(--bad)}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-weight:500;font-size:.92rem}
+.tag svg{width:1.1em;height:1.1em;color:var(--accent)}
+
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.cat{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;min-width:0}
+.cat .art{height:120px;background-size:cover;background-position:center}
+.cat div.t{padding:14px 16px}
+.cat h3{font-size:1.35rem;text-transform:uppercase;margin-bottom:4px}
+.cat p{margin:0;color:var(--muted);font-size:.9rem}
+
+/* review slider */
+.rev{position:relative;background:var(--steel);color:var(--bg);border-radius:6px;padding:32px clamp(20px,5vw,56px);overflow:hidden}
+.rev blockquote{margin:0;font-family:var(--display);font-weight:600;font-size:clamp(1.5rem,3.6vw,2.4rem);line-height:1.15;min-height:6.5em;transition:opacity .5s}
+.rev .meta{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-top:18px;font-size:.9rem}
+.rev .stars{color:#ffd166;margin:0}
+.rev .ctl{display:flex;gap:8px}
+.rev .ctl button{width:42px;height:42px;border-radius:50%;border:1.5px solid currentColor;background:transparent;color:inherit;cursor:pointer;display:grid;place-items:center}
+.rev .ctl svg{width:20px;height:20px}
+.note{margin-top:14px;color:var(--muted);font-size:.85rem}
+
+footer{margin-top:48px;padding-block:28px 40px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(prefers-reduced-motion:reduce){.slide.on{animation:none}.ticker div{animation:none}.q{transition:none}}
+</style>
+<style>html{color-scheme:light}body{margin:0;font-size:16px}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.800 12 21 12 21z"/><circle cx="12" cy="9.500" r="2.500"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="M12 2.500l2.900 6 6.600.9-4.800 4.600 1.200 6.500L12 17.300 6.100 20.500l1.200-6.500L2.500 9.400l6.600-.9z"/></symbol>
+  <symbol id="box" viewBox="0 0 24 24"><path d="M3 7.500L12 3l9 4.500v9L12 21l-9-4.500z"/><path d="M3 7.500l9 4.500 9-4.500M12 12v9"/></symbol>
+  <symbol id="truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h4l3 3v3h-7"/><circle cx="6.500" cy="17.500" r="1.800"/><circle cx="17.500" cy="17.500" r="1.800"/></symbol>
+  <symbol id="paint" viewBox="0 0 24 24"><rect x="3" y="3" width="14" height="6" rx="1.500"/><path d="M17 6h3v6h-9v3M11 15v6"/></symbol>
+  <symbol id="wrench" viewBox="0 0 24 24"><path d="M14.500 6.500a4 4 0 0 0 5 5L21 13l-3 3-1.500-1.500L7 24 3 20l9.500-9.500L11 9l3-3z" transform="scale(.9) translate(1 -1)"/></symbol>
+  <symbol id="scale" viewBox="0 0 24 24"><path d="M12 3v18M6 21h12M4 7h16"/><path d="M4 7l-2.500 6a3 3 0 0 0 5 0zM20 7l-2.500 6a3 3 0 0 0 5 0z"/></symbol>
+  <symbol id="layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5M3 17.500l9 5 9-5" transform="translate(0 -1)"/></symbol>
+  <symbol id="store" viewBox="0 0 24 24"><path d="M3 9l1.500-5h15L21 9M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 12v9h14v-9"/><path d="M10 21v-5h4v5"/></symbol>
+  <symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.500"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6M16 4.500a3.500 3.500 0 0 1 0 7M18 14c2.500.7 4 2.500 4 6"/></symbol>
+  <symbol id="tag" viewBox="0 0 24 24"><path d="M3 12V3h9l9 9-9 9z"/><circle cx="7.500" cy="7.500" r="1.200"/></symbol>
+  <symbol id="left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="moon" viewBox="0 0 24 24"><path d="M20 14.500A8 8 0 0 1 9.500 4 8 8 0 1 0 20 14.500z"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="M4 12.500l5 5L20 6.500"/></symbol>
+  <symbol id="map" viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/></symbol>
+</svg>
+
+<div class="wrap" style="max-width:none">
+<header class="hero" id="top">
+  <div id="slides" aria-hidden="true"></div>
+  <div class="hero-in"><div class="wrap" style="width:100%;display:flex;flex-direction:column;justify-content:space-between;gap:28px;flex:1">
+    <div class="top">
+      <div class="brand"><b>SJ</b> Sohan Lal Jiwan Lal</div>
+      <button class="theme" id="theme" type="button"><svg class="i" style="width:16px;height:16px"><use href="#moon"/></svg><span id="themeLbl">Dark mode</span></button>
+    </div>
+    <div>
+      <div class="status"><span class="dot" id="dot"></span><span id="statusTxt">Checking hours…</span></div>
+      <h1>Sohan Lal Jiwan Lal <em>Hardware</em> Store</h1>
+      <p class="lead">Hardware, paints, primers, weighing scales and brass, copper and metal sheets. Wholesale and retail, near Baba Bhootnath Temple, Chohatta Bazar, Mandi.</p>
+    </div>
+    <div class="hero-foot">
+      <div class="cta">
+        <a class="btn" href="https://www.google.com/maps/search/?api=1&query=31.7098829,76.9316653&query_place_id=ChIJpRyjalTjBDkRjGPzwaehRdw" target="_blank" rel="noopener"><svg class="i" style="width:20px;height:20px"><use href="#pin"/></svg>Open in Google Maps</a>
+        <a class="btn ghost" href="tel:+919418630642"><svg class="i" style="width:20px;height:20px"><use href="#phone"/></svg>+91 94186 30642</a>
+      </div>
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+        <span class="cap" id="cap"></span>
+        <div class="dots" id="dots"></div>
+      </div>
+    </div>
+  </div></div>
+</header>
+
+<div class="ticker" aria-label="Shop announcements"><div id="tick"></div></div>
+
+<main class="wrap">
+  <section>
+    <div class="sh"><h2>Quick dashboard</h2><span>Tap a tile to jump</span></div>
+    <div class="quick">
+      <a class="q" href="#contact"><span class="ic"><svg class="i"><use href="#phone"/></svg></span><b>Call</b><small>+91 94186 30642</small></a>
+      <a class="q" href="#contact"><span class="ic"><svg class="i"><use href="#pin"/></svg></span><b>Find us</b><small>Chohatta Bazar, Mandi</small></a>
+      <a class="q" href="#hours"><span class="ic"><svg class="i"><use href="#clock"/></svg></span><b>Hours</b><small>Mon to Sat, 9 AM to 8 PM</small></a>
+      <a class="q" href="#products"><span class="ic"><svg class="i"><use href="#box"/></svg></span><b>Products</b><small>Paint, hardware, metals</small></a>
+      <a class="q" href="#reviews"><span class="ic"><svg class="i"><use href="#star"/></svg></span><b>Reviews</b><small>4.8 on Google</small></a>
+      <a class="q" href="#contact"><span class="ic"><svg class="i"><use href="#truck"/></svg></span><b>Wholesale</b><small>Wholesale and retail</small></a>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid">
+      <div class="card c4">
+        <h3><svg class="i"><use href="#star"/></svg>Google rating</h3>
+        <div class="stat">4.8<small> / 5</small></div>
+        <div class="stars" id="stars"></div>
+        <div class="muted" style="color:var(--muted)">Based on 23 Google reviews</div>
+        <div class="bars" aria-hidden="true">
+          <div class="bar"><span>5</span><i><u style="width:92%"></u></i></div>
+          <div class="bar"><span>4</span><i><u style="width:6%"></u></i></div>
+          <div class="bar"><span>3</span><i><u style="width:2%"></u></i></div>
+        </div>
+        <p class="note">Bars show an approximate spread for a 4.8 average.</p>
+      </div>
+
+      <div class="card c8" id="contact">
+        <h3><svg class="i"><use href="#store"/></svg>Shop information</h3>
+        <ul class="info">
+          <li><svg class="i"><use href="#store"/></svg><div><b>Name</b><span>Sohan Lal Jiwan Lal (Hardware Store)</span></div></li>
+          <li><svg class="i"><use href="#pin"/></svg><div><b>Address</b><span>Near Baba Bhootnath Temple, Chohatta Bazar, Samkhetar, Mandi, Himachal Pradesh 175001, India</span></div></li>
+          <li><svg class="i"><use href="#phone"/></svg><div><b>Phone</b><span id="ph">+91 94186 30642</span><button class="copy" id="copy" type="button">Copy</button></div></li>
+          <li><svg class="i"><use href="#tag"/></svg><div><b>Type</b><span>Hardware store, building materials, home goods, wholesaler</span></div></li>
+        </ul>
+        <p class="note">Details taken from the shop's Google listing.</p>
+      </div>
+
+      <div class="card c5" id="hours">
+        <h3><svg class="i"><use href="#clock"/></svg>Opening hours</h3>
+        <table id="hoursTbl"></table>
+        <p class="note">Hours shown in Indian Standard Time.</p>
+      </div>
+
+      <div class="card c7">
+        <h3><svg class="i"><use href="#check"/></svg>Why customers come here</h3>
+        <div class="tags">
+          <span class="tag"><svg class="i"><use href="#tag"/></svg>Genuine prices</span>
+          <span class="tag"><svg class="i"><use href="#users"/></svg>Knowledgeable staff</span>
+          <span class="tag"><svg class="i"><use href="#box"/></svg>Great variety</span>
+          <span class="tag"><svg class="i"><use href="#truck"/></svg>Wholesale and retail</span>
+          <span class="tag"><svg class="i"><use href="#paint"/></svg>Paints and primers</span>
+          <span class="tag"><svg class="i"><use href="#scale"/></svg>Weighing scales</span>
+          <span class="tag"><svg class="i"><use href="#layers"/></svg>Brass, copper and metal sheets</span>
+          <span class="tag"><svg class="i"><use href="#check"/></svg>Quality products</span>
+        </div>
+        <p style="margin:18px 0 0;color:var(--muted)">Reviewers on Google describe it as a trusted wholesale and retail shop for hardware and paint in Mandi, with polite, helpful staff and an experienced owner.</p>
+      </div>
+    </div>
+  </section>

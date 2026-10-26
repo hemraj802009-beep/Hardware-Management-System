@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172d29">
+  <meta name="description" content="Contact Sharma Hardware in Ner Chowk, Mandi, Himachal Pradesh for hardware supplies and project essentials.">
+  <title>Sharma Hardware | Ner Chowk, Mandi</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172d29;
+      --ink-soft: #36504a;
+      --paper: #f5f2e9;
+      --paper-deep: #ebe6d9;
+      --white: #fffdf8;
+      --orange: #e47743;
+      --orange-dark: #bd5429;
+      --line: rgba(23, 45, 41, .14);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    .shell { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
+    .topline {
+      background: var(--ink);
+      color: #e8e6dc;
+      font-size: .78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .topline-inner {
+      min-height: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .topline a { text-decoration: none; }
+    .topline a:hover { color: #ffc49e; }
+    header { background: var(--paper); }
+    .nav {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      color: var(--orange-dark);
+    }
+    .brand-mark svg { width: 21px; height: 21px; }
+    .brand-name { display: block; font: 700 1.1rem var(--serif); letter-spacing: -.02em; }
+    .brand-place { display: block; color: #69736a; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 30px; }
+    .nav-links a {
+      color: var(--ink-soft);
+      font-size: .88rem;
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--orange-dark); }
+    .button {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 19px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      background: var(--orange);
+      color: #211d18;
+      font-size: .87rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .18s ease, background .18s ease;
+    }
+    .button:hover { transform: translateY(-2px); background: #f18c5b; }
+    .button svg { width: 17px; height: 17px; }
+    .button-outline { border-color: rgba(255,255,255,.55); background: transparent; color: white; }
+    .button-outline:hover { background: rgba(255,255,255,.12); }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 540px;
+      background:
+        radial-gradient(ellipse at 78% 40%, rgba(228,119,67,.23), transparent 29%),
+        linear-gradient(110deg, #172d29 0%, #213a34 67%, #31483d 100%);
+      color: white;
+    }
+    .hero::before, .hero::after {
+      position: absolute;
+      content: "";
+      pointer-events: none;
+    }
+    .hero::before {
+      width: 450px;
+      height: 450px;
+      right: 8%;
+      top: 34px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50%;
+      box-shadow: 0 0 0 44px rgba(255,255,255,.025), 0 0 0 88px rgba(255,255,255,.02);
+    }
+    .hero::after {
+      right: 13%;
+      bottom: -120px;
+      width: 480px;
+      height: 280px;
+      transform: rotate(-34deg);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      min-height: 540px;
+      grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr);
+      align-items: center;
+      gap: 35px;
+      padding-block: 68px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffc49e;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 26px; height: 1px; background: currentColor; content: ""; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 660px;
+      margin: 22px 0 20px;
+      font: 400 clamp(3rem, 6.8vw, 5.7rem)/.98 var(--serif);
+      letter-spacing: -.055em;
+    }
+    h1 span { color: #ffc49e; font-style: italic; }
+    .hero-copy { max-width: 490px; margin-bottom: 30px; color: #d8ded6; font-size: 1.02rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-note { margin: 21px 0 0; color: #b8c3b9; font-size: .77rem; }
+    .hero-art {
+      position: relative;
+      display: grid;
+      min-height: 370px;
+      place-items: center;
+    }
+    .art-ring {
+      display: grid;
+      width: min(340px, 72vw);
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(228,119,67,.17), transparent 69%);
+    }
+    .art-ring svg { width: 75%; height: auto; overflow: visible; filter: drop-shadow(0 18px 20px rgba(0,0,0,.18)); }
+    .art-stamp {
+      position: absolute;
+      right: 4%;
+      bottom: 14%;
+      display: grid;
+      width: 104px;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.6);
+      border-radius: 50%;
+      background: var(--orange);
+      color: var(--ink);
+      font: italic .98rem/1.2 var(--serif);
+      text-align: center;
+      transform: rotate(9deg);
+    }
+    .trust-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--line);
+      background: var(--white);
+    }
+    .trust-item {
+      display: flex;
+      min-height: 96px;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      border-right: 1px solid var(--line);
+    }
+    .trust-item:last-child { border-right: 0; }
+    .trust-icon { color: var(--orange-dark); }
+    .trust-icon svg { width: 22px; height: 22px; }
+    .trust-item strong { display: block; font: 700 .92rem var(--serif); }
+    .trust-item span:not(.trust-icon) { color: #6a736c; font-size: .76rem; }
+    section { scroll-margin-top: 24px; }
+    .section { padding-block: 104px; }
+    .section-heading { max-width: 650px; margin-bottom: 42px; }
+    .section-heading .eyebrow { color: var(--orange-dark); }
+    h2 { margin: 14px 0; font: 400 clamp(2.3rem, 4.5vw, 3.8rem)/1.06 var(--serif); letter-spacing: -.045em; }
+    .section-heading p { max-width: 560px; margin-bottom: 0; color: #69736a; }
+    .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .category {
+      min-height: 195px;
+      padding: 27px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      transition: background .2s ease;
+    }
+    .category:hover { background: rgba(255,253,248,.68); }
+    .category-icon {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      margin-bottom: 22px;
+      place-items: center;
+      border: 1px solid rgba(228,119,67,.5);
+      border-radius: 50%;
+      color: var(--orange-dark);
+    }
+    .category-icon svg { width: 20px; height: 20px; }
+    .category h3 { margin-bottom: 7px; font: 700 1.1rem var(--serif); }
+    .category p { margin-bottom: 0; color: #70786f; font-size: .85rem; }
+    .category-note { margin: 17px 0 0; color: #69736a; font-size: .78rem; }
+    .about-band { background: var(--paper-deep); }
+    .about-grid { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: 90px; }
+    .about-graphic {
+      position: relative;
+      display: grid;
+      min-height: 360px;
+      place-items: center;
+      overflow: hidden;
+      background: var(--ink);
+      color: white;
+    }
+    .about-graphic::before {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 50%;
+      box-shadow: 0 0 0 28px rgba(255,255,255,.04), 0 0 0 56px rgba(255,255,255,.03);
+      content: "";
+    }
+    .about-graphic svg { position: relative; width: 140px; height: 140px; color: #ffc49e; }
+    .about-graphic span { position: absolute; bottom: 24px; left: 26px; color: #c3cdc2; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
+    .about-copy h2 { max-width: 520px; }
+    .about-copy > p { max-width: 525px; color: #5e6b61; }
+    .about-points { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; margin: 29px 0 0; padding: 0; list-style: none; }
+    .about-points li { display: flex; align-items: flex-start; gap: 10px; font-size: .87rem; }
+    .check { display: grid; flex: 0 0 21px; width: 21px; height: 21px; place-items: center; border-radius: 50%; background: #d9e0d2; color: var(--ink); font-size: .75rem; }
+    .contact-section { padding-bottom: 108px; }
+    .contact-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      background: var(--ink);
+      color: white;
+    }
+    .contact-content { padding: clamp(30px, 6vw, 68px); }
+    .contact-content .eyebrow { color: #ffc49e; }
+    .contact-content h2 { margin-bottom: 15px; }
+    .contact-content > p { max-width: 430px; margin-bottom: 30px; color: #c4cfc4; }
+    .contact-details { display: grid; gap: 19px; margin: 0 0 29px; }
+    .contact-detail { display: grid; grid-template-columns: 28px 1fr; gap: 12px; }
+    .contact-detail svg { width: 21px; height: 21px; color: #ffc49e; }
+    .contact-detail small { display: block; color: #b9c4ba; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; }
+    .contact-detail a, .contact-detail span { display: inline-block; margin-top: 3px; color: white; font-size: .95rem; text-decoration: none; }
+    .contact-detail a:hover { color: #ffc49e; }
+    .map-wrap { min-height: 510px; background: #d7d1c3; }
+    .map-wrap iframe { display: block; width: 100%; height: 100%; min-height: 510px; border: 0; filter: grayscale(.2) contrast(.94); }
+    footer { padding-block: 27px; background: #10231f; color: #c4cfc4; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    footer p { margin: 0; font-size: .76rem; }
+    footer a { color: #ffc49e; font-size: .76rem; text-decoration: none; }
+    .mobile-call { display: none; }
+
+    @media (max-width: 800px) {
+      .nav { min-height: 72px; }
+      .nav-links { gap: 17px; }
+      .nav-links a { font-size: .82rem; }
+      .nav-links .button { min-height: 42px; padding-inline: 13px; }
+      .hero-inner { grid-template-columns: 1fr .75fr; gap: 10px; }
+      .hero-art { min-height: 300px; }
+      .about-grid { gap: 45px; }
+      .map-wrap, .map-wrap iframe { min-height: 430px; }
+    }
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 36px, 480px); }
+      .topline-inner { min-height: 32px; font-size: .66rem; }
+      .nav { min-height: 70px; }
+      .nav-links a:not(.button) { display: none; }
+      .brand-mark { width: 38px; height: 38px; }
+      .brand-name { font-size: 1rem; }
+      .hero, .hero-inner { min-height: auto; }
+      .hero-inner { grid-template-columns: 1fr; padding-block: 72px 50px; }
+      h1 { max-width: 500px; font-size: clamp(3.35rem, 14vw, 5rem); }
+      .hero-copy { font-size: .95rem; }
+      .hero-art { position: absolute; top: 0; right: -135px; width: 280px; min-height: 280px; opacity: .22; }
+      .art-ring { width: 270px; }
+      .art-stamp { display: none; }
+      .trust-strip { grid-template-columns: 1fr; }
+      .trust-item { min-height: 73px; justify-content: flex-start; padding-inline: max(24px, calc((100vw - 480px) / 2)); border-right: 0; border-bottom: 1px solid var(--line); }
+      .trust-item:last-child { border-bottom: 0; }
+      .section { padding-block: 75px; }
+      .section-heading { margin-bottom: 29px; }
+      .category-grid { grid-template-columns: 1fr 1fr; }
+      .category { min-height: 177px; padding: 20px 15px; }
+      .category h3 { font-size: 1rem; }
+      .category p { font-size: .78rem; }
+      .category-icon { margin-bottom: 16px; }
+      .about-grid { grid-template-columns: 1fr; gap: 34px; }
+      .about-graphic { min-height: 250px; }
+      .about-graphic::before { width: 180px; height: 180px; }
+      .about-graphic svg { width: 100px; height: 100px; }
+      .about-points { gap: 16px 12px; }
+      .about-points li { font-size: .79rem; }
+      .contact-card { grid-template-columns: 1fr; }
+      .contact-content { padding: 35px 24px; }
+      .map-wrap, .map-wrap iframe { min-height: 330px; }
+      .contact-section { padding-bottom: 76px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; gap: 7px; }
+      .mobile-call {
+        position: fixed;
+        z-index: 5;
+        right: 14px;
+        bottom: 14px;
+        display: inline-flex;
+        min-height: 48px;
+        align-items: center;
+        gap: 8px;
+        padding: 0 16px;
+        border-radius: 50px;
+        background: var(--orange);
+        box-shadow: 0 8px 24px rgba(0,0,0,.2);
+        color: var(--ink);
+        font-size: .85rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .mobile-call svg { width: 17px; height: 17px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <div class="shell topline-inner">
+      <span>Hardware supplies · Ner Chowk, Himachal Pradesh</span>
+      <a href="tel:+919736620896">Call: 097366 20896</a>
+    </div>
+  </div>
+
+  <header>
+    <div class="shell nav">
+      <a class="brand" href="#home" aria-label="Sharma Hardware home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.3 6.2 3.5 3.5M4 20l3.8-.8L19.2 7.8a2.5 2.5 0 0 0-3.5-3.5L4.3 15.8 4 20Z"/><path d="m13.4 6.9 3.5 3.5"/></svg>
+        </span>
+        <span><span class="brand-name">Sharma Hardware</span><span class="brand-place">Ner Chowk · Mandi</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#supplies">Supplies</a>
+        <a href="#about">About</a>
+        <a href="#visit">Visit</a>
+        <a class="button" href="tel:+919736620896">Call the store</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="shell hero-inner">
+        <div>
+          <span class="eyebrow">Your local hardware stop</span>
+          <h1>Make room<br>for <span>what's next.</span></h1>
+          <p class="hero-copy">The right parts make every repair, renovation and new idea easier. Get in touch with Sharma Hardware in Ner Chowk for your project essentials.</p>
+          <div class="hero-actions">
+            <a class="button" href="tel:+919736620896">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 8.9a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.8 2.1Z"/></svg>
+              Call 097366 20896
+            </a>
+            <a class="button button-outline" href="https://www.google.com/maps?cid=3727566613556880188" target="_blank" rel="noopener noreferrer">Get directions <span aria-hidden="true">↗</span></a>
+          </div>
+          <p class="hero-note">Call ahead to check product availability and current store hours.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-ring">
+            <svg viewBox="0 0 300 300" fill="none">
+              <path d="M69 215 192 92l18 18L87 233l-26 8 8-26Z" fill="#e47743" stroke="#ffcfad" stroke-width="3" stroke-linejoin="round"/>
+              <path d="m193 91 18-18c9-9 23-9 32 0s9 23 0 32l-18 18-32-32Z" fill="#f1e6ce" stroke="#ffcfad" stroke-width="3" stroke-linejoin="round"/>
+              <path d="m81 225 14 14M114 187l15 15M145 156l15 15M176 125l15 15M208 93l15 15" stroke="#172d29" stroke-width="5" stroke-linecap="round"/>
+              <path d="M82 236c-7 6-15 7-21 5m31-30 103-103" stroke="#fff4e5" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="151" cy="151" r="126" stroke="rgba(255,255,255,.12)"/>
+            </svg>
+          </div>
+          <div class="art-stamp">Good work<br>starts here</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="trust-strip" aria-label="Store information">
+      <div class="trust-item">
+        <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <div><strong>In Ner Chowk</strong><span>Mandi, Himachal Pradesh</span></div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 8.9a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.8 2.1Z"/></svg></span>
+        <div><strong>Talk to the store</strong><span>097366 20896</span></div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M6 3v8m12-8v8M5 13h14l1 8H4l1-8Z"/><path d="m9 17 2 2 4-4"/></svg></span>
+        <div><strong>Planning a project?</strong><span>Ask about availability by phone</span></div>
+      </div>
+    </div>
+
+    <section class="section" id="supplies">
+      <div class="shell">
+        <div class="section-heading">
+          <span class="eyebrow">For the job at hand</span>
+          <h2>Small fixes. Big plans.<br>Start with the essentials.</h2>
+          <p>Looking for a particular item? Call Sharma Hardware and check what's available before you make the trip.</p>
+        </div>
+        <div class="category-grid">
+          <article class="category">
+            <span class="category-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.3 6.2 3.5 3.5M4 20l3.8-.8L19.2 7.8a2.5 2.5 0 0 0-3.5-3.5L4.3 15.8 4 20Z"/></svg></span>
+            <h3>Tools &amp; hand tools</h3><p>For repairs, fitting and everyday jobs.</p>
+          </article>
+          <article class="category">
+            <span class="category-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.3 7.7 7.7 4.4 7.7-4.4M12 12v9"/></svg></span>
+            <h3>Fasteners &amp; fittings</h3><p>Ask about the sizes and fittings your work needs.</p>
+          </article>
+          <article class="category">
+            <span class="category-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-4.5 7-11V5l-7-3-7 3v6c0 6.5 7 11 7 11Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <h3>Building essentials</h3><p>Get in touch about the materials on your list.</p>
+          </article>
+          <article class="category">
+            <span class="category-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8m0 0a4 4 0 1 0-4-4m4 4a4 4 0 1 1 4-4"/><path d="M7 22h10"/></svg></span>
+            <h3>Electrical supplies</h3><p>Call to enquire about electrical essentials.</p>
+          </article>
+          <article class="category">
+            <span class="category-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18v10H3zM5 11V5h14v6M8 5V3h8v2M7 15h3m4 0h3"/></svg></span>
+            <h3>Plumbing supplies</h3><p>Ask about parts and fittings for your repair.</p>
+          </article>
+          <article class="category">
+            <span class="category-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M7 20V8l5-4 5 4v12M9 11h6m-6 4h6"/></svg></span>
+            <h3>Home &amp; repair needs</h3><p>For maintenance, upgrades and DIY projects.</p>
+          </article>
+        </div>
+        <p class="category-note">Product categories are examples of common hardware needs, not a live stock list. Please call to confirm availability.</p>
+      </div>
+    </section>
+
+    <section class="about-band" id="about">
+      <div class="shell section about-grid">
+        <div class="about-graphic" aria-hidden="true">
+          <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m17 85 46-46 9 9-46 46-19 6 10-15Z"/>
+            <path d="m67 35 13-13a12 12 0 0 1 17 17L84 52"/>
+            <path d="m25 87 8 8m-1-24 8 8m8-24 8 8m8-24 8 8"/>
+            <path d="M79 72h24M91 60v24"/>
+          </svg>
+          <span>Sharma Hardware · Ner Chowk</span>
+        </div>
+        <div class="about-copy">
+          <span class="eyebrow">Right here in Ner Chowk</span>
+          <h2>A nearby stop for your next project.</h2>
+          <p>Sharma Hardware serves customers in Ner Chowk, Mandi. Whether you're planning a repair or getting started on a larger job, call ahead with your requirements and check item availability before visiting.</p>
+          <ul class="about-points">
+            <li><span class="check" aria-hidden="true">✓</span><span>Local Ner Chowk location</span></li>
+            <li><span class="check" aria-hidden="true">✓</span><span>Direct phone enquiry</span></li>
+            <li><span class="check" aria-hidden="true">✓</span><span>Confirm items before travelling</span></li>
+            <li><span class="check" aria-hidden="true">✓</span><span>Directions through Google Maps</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="visit">
+      <div class="shell">
+        <div class="contact-card">
+          <div class="contact-content">
+            <span class="eyebrow">Come by or call</span>
+            <h2>Find us in<br>Ner Chowk.</h2>
+            <p>Need to check if something is in stock or confirm today's hours? Give the store a call before heading over.</p>
+            <div class="contact-details">
+              <div class="contact-detail">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                <div><small>Location</small><span>Ner Chowk, Mandi, Himachal Pradesh</span></div>
+              </div>
+              <div class="contact-detail">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 8.9a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.8 2.1Z"/></svg>
+                <div><small>Phone</small><a href="tel:+919736620896">097366 20896</a></div>
+              </div>
+              <div class="contact-detail">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <div><small>Store hours</small><span>Google currently lists 24 hours · call to confirm</span></div>
+              </div>
+            </div>
+            <a class="button" href="https://www.google.com/maps?cid=3727566613556880188" target="_blank" rel="noopener noreferrer">Open Google Maps <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="map-wrap">
+            <iframe title="Map showing Sharma Hardware in Ner Chowk" src="https://maps.google.com/maps?q=Sharma%20Hardware%2C%20Ner%20Chowk%2C%20Mandi%2C%20Himachal%20Pradesh&t=&z=14&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <p>© <span id="year">2026</span> Sharma Hardware · Ner Chowk, Mandi</p>
+      <a href="https://www.google.com/maps?cid=3727566613556880188" target="_blank" rel="noopener noreferrer">View public listing on Google Maps ↗</a>
+    </div>
+  </footer>
+  <a class="mobile-call" href="tel:+919736620896" aria-label="Call Sharma Hardware">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 8.9a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.8 2.1Z"/></svg>
+    Call Sharma Hardware
+  </a>
+</body>
+</html>

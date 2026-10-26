@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sohan Lal Jiwan Lal Hardware Store - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            background: linear-gradient(rgba(245, 247, 250, 0.92), rgba(245, 247, 250, 0.92)), url('images/hardware_bg_2.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            color: #333;
+        }
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: linear-gradient(180deg, #1a4d2e 0%, #0f2f1a 100%);
+            color: white;
+            overflow-y: auto;
+        }
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-header h2 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        .sidebar-header p {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+        .menu-section {
+            margin-bottom: 1.5rem;
+        }
+        .menu-section-title {
+            padding: 0 1rem 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: white;
+            text-decoration: none;
+            transition: background 0.2s;
+            gap: 0.75rem;
+        }
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .menu-item.active {
+            background: rgba(255,255,255,0.2);
+            border-left: 3px solid #4ade80;
+        }
+        .menu-icon {
+            width: 20px;
+            text-align: center;
+        }
+        .main-content {
+            margin-left: 260px;
+            padding: 1.5rem;
+        }
+        .topbar {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .topbar h1 {
+            font-size: 1.5rem;
+            color: #1a4d2e;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .stat-icon.blue { background: #e0f2fe; color: #0284c7; }
+        .stat-icon.green { background: #dcfce7; color: #16a34a; }
+        .stat-icon.orange { background: #fed7aa; color: #ea580c; }
+        .stat-icon.purple { background: #e9d5ff; color: #9333ea; }
+        .stat-info h3 {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+        .stat-info p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a4d2e;
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .table-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-header h2 {
+            font-size: 1.125rem;
+            color: #1a4d2e;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            background: #1a4d2e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn:hover {
+            background: #2c5a3d;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #f9fafb;
+            padding: 0.75rem 1.25rem;
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #666;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        td {
+            padding: 0.75rem 1.25rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+        }
+        .status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .status.success { background: #dcfce7; color: #16a34a; }
+        .status.pending { background: #fef3c7; color: #d97706; }
+        .status.danger { background: #fee2e2; color: #dc2626; }
+        @media (max-width: 968px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Sohan Lal Jiwan Lal</h2>
+            <p>Hardware Store - Mandi</p>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <div class="menu-section-title">Main</div>
+                <a href="#" class="menu-item active"><i class="fas fa-th-large menu-icon"></i><span>Dashboard</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-shopping-cart menu-icon"></i><span>Purchase Order</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-wrench menu-icon"></i><span>Tool Stock Details</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-truck menu-icon"></i><span>Suppliers</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-users menu-icon"></i><span>Customers</span></a>
+            </div>
+            <div class="menu-section">
+                <div class="menu-section-title">Inventory</div>
+                <a href="#" class="menu-item"><i class="fas fa-boxes menu-icon"></i><span>Stock Management</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-chart-bar menu-icon"></i><span>Stock Reports</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-warehouse menu-icon"></i><span>Godown Details</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-bell menu-icon"></i><span>Low Stock Alerts</span></a>
+            </div>
+            <div class="menu-section">
+                <div class="menu-section-title">Sales</div>
+                <a href="#" class="menu-item"><i class="fas fa-cash-register menu-icon"></i><span>POS/Billing</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-file-invoice menu-icon"></i><span>Sales Invoice</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-list-alt menu-icon"></i><span>Sales Return</span></a>
+            </div>
+            <div class="menu-section">
+                <div class="menu-section-title">Finance</div>
+                <a href="#" class="menu-item"><i class="fas fa-receipt menu-icon"></i><span>Expenses</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-money-bill-wave menu-icon"></i><span>Payments</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-calculator menu-icon"></i><span>GST Reports</span></a>
+            </div>
+            <div class="menu-section">
+                <div class="menu-section-title">Others</div>
+                <a href="sohanlal.html" class="menu-item"><i class="fas fa-home menu-icon"></i><span>Store Website</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-user-cog menu-icon"></i><span>Staff Management</span></a>
+                <a href="#" class="menu-item"><i class="fas fa-cog menu-icon"></i><span>Settings</span></a>
+            </div>
+        </nav>
+    </aside>
+    <main class="main-content">
+        <div class="topbar">
+            <h1>Dashboard</h1>
+            <div>
+                <a href="#" class="btn"><i class="fas fa-plus"></i> New Purchase Order</a>
+            </div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-box"></i></div>
+                <div class="stat-info">
+                    <h3>Total Products</h3>
+                    <p>2,450</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-rupee-sign"></i></div>
+                <div class="stat-info">
+                    <h3>Today's Sales</h3>
+                    <p>&#8377; 45,280</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="fas fa-shopping-cart"></i></div>
+                <div class="stat-info">
+                    <h3>Purchase Orders</h3>
+                    <p>18</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-info">
+                    <h3>Low Stock Items</h3>
+                    <p>12</p>
+                </div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="table-card">
+                <div class="card-header">
+                    <h2>Recent Purchase Orders</h2>
+                    <a href="#" class="btn"><i class="fas fa-eye"></i> View All</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>PO No.</th><th>Supplier</th><th>Date</th><th>Amount</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>PO-2026-045</td><td>Sharma Steel Traders</td><td>19 Oct 2026</td><td>&#8377; 24,500</td><td><span class="status success">Delivered</span></td></tr>
+                        <tr><td>PO-2026-044</td><td>Gupta Hardware Co.</td><td>18 Oct 2026</td><td>&#8377; 15,800</td><td><span class="status pending">Pending</span></td></tr>
+                        <tr><td>PO-2026-043</td><td>Himachal Pipes Ltd.</td><td>17 Oct 2026</td><td>&#8377; 32,000</td><td><span class="status success">Delivered</span></td></tr>
+                        <tr><td>PO-2026-042</td><td>Verma Tools &amp; Equipments</td><td>16 Oct 2026</td><td>&#8377; 8,750</td><td><span class="status pending">Pending</span></td></tr>
+                        <tr><td>PO-2026-041</td><td>Kumar Paints</td><td>15 Oct 2026</td><td>&#8377; 12,300</td><td><span class="status danger">Cancelled</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-card">
+                <div class="card-header">
+                    <h2>Tool Stock Details</h2>
+                    <a href="#" class="btn"><i class="fas fa-wrench"></i> Manage</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Tool Name</th><th>Available</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Hammers</td><td>45</td><td><span class="status success">In Stock</span></td></tr>
+                        <tr><td>Screwdrivers Set</td><td>28</td><td><span class="status success">In Stock</span></td></tr>
+                        <tr><td>Wrenches</td><td>15</td><td><span class="status pending">Low</span></td></tr>
+                        <tr><td>Drill Machines</td><td>8</td><td><span class="status pending">Low</span></td></tr>
+                        <tr><td>Measuring Tapes</td><td>5</td><td><span class="status danger">Critical</span></td></tr>
+                        <tr><td>Angle Grinders</td><td>6</td><td><span class="status pending">Low</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
