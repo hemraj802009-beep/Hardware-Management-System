@@ -109,9 +109,12 @@
             <h3 style="margin-bottom:8px;">Sale Completed!</h3>
             <p class="text-muted" style="margin-bottom:4px;">Invoice: <strong id="successInvoice"></strong></p>
             <p class="text-success fw-bold" style="font-size:24px; margin-bottom:24px;" id="successTotal"></p>
-            <div class="d-flex gap-1" style="justify-content:center;">
+            <div class="d-flex gap-1" style="justify-content:center; flex-wrap: wrap;">
                 <a id="viewInvoiceBtn" href="#" class="btn btn-primary">
                     <i class="fas fa-eye"></i> View Invoice
+                </a>
+                <a id="whatsappBtn" href="#" target="_blank" class="btn btn-success" style="display:none;">
+                    <i class="fab fa-whatsapp"></i> Send via WhatsApp
                 </a>
                 <button class="btn btn-secondary" onclick="closeSuccess()">
                     <i class="fas fa-plus"></i> New Sale
@@ -244,6 +247,20 @@ async function checkout() {
             document.getElementById('successInvoice').textContent = data.invoice_number;
             document.getElementById('successTotal').textContent = '₹' + data.total.toLocaleString('en-IN', {minimumFractionDigits:2});
             document.getElementById('viewInvoiceBtn').href = '/sales/view/' + data.sale_id;
+            const waBtn = document.getElementById('whatsappBtn');
+            if (waBtn) {
+                if (data.whatsapp_link) {
+                    waBtn.href = data.whatsapp_link;
+                    waBtn.style.display = 'inline-flex';
+                    // Auto-open WhatsApp if customer has phone
+                    try {
+                        window.open(data.whatsapp_link, '_blank');
+                    } catch (e) {}
+                    waBtn.onclick = null;
+                } else {
+                    waBtn.style.display = 'none';
+                }
+            }
             document.getElementById('successModal').classList.add('active');
         } else {
             alert(data.error || 'Checkout failed');

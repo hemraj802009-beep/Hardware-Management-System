@@ -170,11 +170,27 @@ async def pos_checkout(
     db.commit()
     db.refresh(sale)
 
+    # Prepare WhatsApp/invoice link if customer has phone
+    whatsapp_link = None
+    if sale.customer_id:
+        customer = db.query(Customer).filter(Customer.id == sale.customer_id).first()
+        if customer and customer.phone:
+            # Clean phone number (remove spaces, +, etc.)
+            phone = ''.join(filter(str.isdigit, customer.phone))
+            if phone:
+                # Create invoice link
+                invoice_url = f"/sales/view/{sale.id}"
+                message = f"Hello {customer.name}, your invoice {sale.invoice_number} of ₹{sale.total_amount:.2f} is ready. View it here: {invoice_url}"
+                import urllib.parse
+                whatsapp_link = f"https://wa.me/{phone}?text={urllib.parse.quote(message)}"
+
     return JSONResponse(content={
         "success": True,
         "invoice_number": sale.invoice_number,
         "total": sale.total_amount,
-        "sale_id": sale.id
+        "sale_id": sale.id,
+        "whatsapp_link": whatsapp_link,
+        "customer_phone": customer.phone if 'customer' in locals() and customer and customer.phone else None
     })
 
 
@@ -198,6 +214,30 @@ async def view_sale(request: Request, sale_id: int, db: Session = Depends(get_db
         "user": user,
         "sale": sale,
     })
+
+
+@router.get("/send-whatsapp/{sale_id}")
+async def send_invoice_whatsapp(request: Request, sale_id: int, db: Session = Depends(get_db)):
+    """Send invoice link via WhatsApp to customer."""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+
+    sale = db.query(Sale).options(joinedload(Sale.customer)).filter(Sale.id == sale_id).first()
+    if not sale:
+        return RedirectResponse(url="/sales", status_code=302)
+
+    whatsapp_link = None
+    if sale.customer and sale.customer.phone:
+        phone = ''.join(filter(str.isdigit, sale.customer.phone))
+        if phone:
+            invoice_url = f"/sales/view/{sale.id}"
+            message = f"Hello {sale.customer.name}, your invoice {sale.invoice_number} of ₹{sale.total_amount:.2f} is ready. View it here: {invoice_url}"
+            import urllib.parse
+            whatsapp_link = f"https://wa.me/{phone}?text={urllib.parse.quote(message)}"
+            return RedirectResponse(url=whatsapp_link, status_code=302)
+
+    return RedirectResponse(url=f"/sales/view/{sale_id}", status_code=302)
 
 
 @router.get("/cancel/{sale_id}")

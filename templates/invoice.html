@@ -9,6 +9,11 @@
 <button class="btn btn-secondary btn-sm no-print" onclick="window.print()">
     <i class="fas fa-print"></i> Print
 </button>
+{% if sale.customer and sale.customer.phone %}
+<a href="/sales/send-whatsapp/{{ sale.id }}" class="btn btn-success btn-sm no-print" target="_blank">
+    <i class="fab fa-whatsapp"></i> Send via WhatsApp
+</a>
+{% endif %}
 <a href="/sales" class="btn btn-secondary btn-sm no-print">
     <i class="fas fa-arrow-left"></i> Back to Sales
 </a>
